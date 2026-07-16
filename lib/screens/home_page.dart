@@ -20,10 +20,10 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 2;
 
   final List<Widget> _pages = [
-    CategoriesScreen(),
-    DealsScreen(),
+    const CategoriesScreen(),
+    const DealsScreen(),
     const HomeScreen(),
-    CartScreen(),
+    const CartScreen(),
     const ProfileScreen(),
   ];
 
@@ -38,17 +38,17 @@ class _HomePageState extends State<HomePage> {
     final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       appBar: AppBar(
-        backgroundColor: Color(0xffF4EEFF),
+        backgroundColor: const Color(0xffF4EEFF),
         title: const Center(child: Text('Sales & Service')),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SearchScreen()),
+                MaterialPageRoute(builder: (context) => const SearchScreen()),
               );
             },
           ),
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: true,
-        selectedItemColor: Color(0xff424874),
+        selectedItemColor: const Color(0xff424874),
         unselectedItemColor: Colors.black,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

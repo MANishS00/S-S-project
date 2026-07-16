@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       body: authProvider.isAuthenticated
           ? Consumer<ProfileProvider>(
               builder: (context, profileProvider, child) {

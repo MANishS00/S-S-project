@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/product_provider.dart';
 import '../../providers/category_provider.dart'; // Import the CategoryProvider
-import '../widgets/banner_carousel.dart';
 import 'deals_screen.dart';
 import 'home_view/category_view.dart';
 import 'home_view/deals_view.dart';
@@ -37,8 +36,8 @@ class HomeScreen extends StatelessWidget {
                   // const BannerCarousel(),
                   const SizedBox(height: 5),
                   Container(
-                    decoration: BoxDecoration(color: Color(0xffA6B1E1)),
-                    padding: EdgeInsets.only(left: 8, right: 8),
+                    decoration: const BoxDecoration(color: Color(0xffA6B1E1)),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -53,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DealsScreen(),
+                                    builder: (context) => const DealsScreen(),
                                   ),
                                 );
                               },
@@ -75,8 +74,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const DealsView(),
                   Container(
-                    decoration: BoxDecoration(color: Color(0xffA6B1E1)),
-                    padding: EdgeInsets.only(left: 8, right: 8),
+                    decoration: const BoxDecoration(color: Color(0xffA6B1E1)),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

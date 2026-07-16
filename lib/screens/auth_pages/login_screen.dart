@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
@@ -31,21 +33,21 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Login",style: TextStyle(fontSize: 50),),
-            Text("Welcome Back!"),
-            SizedBox(height: 50),
+            const Text("Login",style: TextStyle(fontSize: 50),),
+            const Text("Welcome Back!"),
+            const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
@@ -59,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Password",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
@@ -77,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 150,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff024874),
+                    backgroundColor: const Color(0xff024874),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -93,12 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have account!"),
+                const Text("Don't have account!"),
                 TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/register');
                     },
-                    child: Text(
+                    child: const Text(
                       "Signup",
                       style: TextStyle(color: Color(0xff024874)),
                     ))

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../models/category.dart';
 import '../screens/category_items_screen.dart';
@@ -5,7 +7,7 @@ import '../screens/category_items_screen.dart';
 class CategoryItem extends StatelessWidget {
   final Category category;
 
-  const CategoryItem({Key? key, required this.category}) : super(key: key);
+  const CategoryItem({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {

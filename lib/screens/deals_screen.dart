@@ -5,16 +5,18 @@ import '../providers/product_provider.dart';
 import '../widgets/product_item.dart';
 
 class DealsScreen extends StatelessWidget {
+  const DealsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       appBar: AppBar(
-        title: Text('Deals'),
-        backgroundColor: Color(0xffF4EEFF),
+        title: const Text('Deals'),
+        backgroundColor: const Color(0xffF4EEFF),
 
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: DealsProductsView(),
       ),
     );
@@ -25,7 +27,7 @@ class DealsScreen extends StatelessWidget {
 
 
 class DealsProductsView extends StatelessWidget {
-  const DealsProductsView({Key? key}) : super(key: key);
+  const DealsProductsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class DealsProductsView extends StatelessWidget {
           if (!productProvider.isLoading) {
             productProvider.fetchProducts();
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           final dealsProducts =
               productProvider.products.where((product) => product.isSale).toList();
@@ -46,9 +48,9 @@ class DealsProductsView extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(4.0),
             child: GridView.builder(
-              physics: NeverScrollableScrollPhysics(), // Disable GridView scrolling
+              physics: const NeverScrollableScrollPhysics(), // Disable GridView scrolling
               shrinkWrap: true, // Ensure GridView takes only required space
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
                 childAspectRatio: 2.3 / 3,
                 crossAxisSpacing: 5,

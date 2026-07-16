@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/product.dart';
@@ -6,8 +8,7 @@ import '../../providers/cart_provider.dart';
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
 
-  const ProductDetailsScreen({Key? key, required this.product})
-      : super(key: key);
+  const ProductDetailsScreen({super.key, required this.product});
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -24,10 +25,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       appBar: AppBar(
         title: Text(widget.product.name),
-        backgroundColor: Color(0xffF4EEFF),
+        backgroundColor: const Color(0xffF4EEFF),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -100,13 +101,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const SizedBox(height: 20),
                   Text(
                     'Available stock: $availableStock',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: [
                       const Text('Quantity: '),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       DropdownButton<int>(
@@ -147,7 +148,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               }
                             : null, // Disable button if quantity exceeds stock
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff024874),
+                          backgroundColor: const Color(0xff024874),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

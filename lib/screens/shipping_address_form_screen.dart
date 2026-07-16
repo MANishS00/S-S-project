@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/shipping_address_provider.dart';
 
 class ShippingAddressForm extends StatefulWidget {
+  const ShippingAddressForm({super.key});
+
   @override
   _ShippingAddressFormState createState() => _ShippingAddressFormState();
 }
@@ -105,7 +109,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
           country: _countryController.text,
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Shipping address saved successfully'),
           ),
         );
@@ -129,19 +133,19 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shipping Address'),
+        title: const Text('Shipping Address'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: _isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : Form(
                 key: _formKey,
                 child: ListView(
                   children: [
                     TextFormField(
                       controller: _fullNameController,
-                      decoration: InputDecoration(labelText: 'Full Name'),
+                      decoration: const InputDecoration(labelText: 'Full Name'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your full name';
@@ -151,7 +155,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _emailController,
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: const InputDecoration(labelText: 'Email'),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty || !value.contains('@')) {
@@ -162,7 +166,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _phoneController,
-                      decoration: InputDecoration(labelText: 'Phone'),
+                      decoration: const InputDecoration(labelText: 'Phone'),
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -173,7 +177,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _address1Controller,
-                      decoration: InputDecoration(labelText: 'Address 1'),
+                      decoration: const InputDecoration(labelText: 'Address 1'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your address';
@@ -183,11 +187,11 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _address2Controller,
-                      decoration: InputDecoration(labelText: 'Address 2'),
+                      decoration: const InputDecoration(labelText: 'Address 2'),
                     ),
                     TextFormField(
                       controller: _cityController,
-                      decoration: InputDecoration(labelText: 'City'),
+                      decoration: const InputDecoration(labelText: 'City'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your city';
@@ -197,7 +201,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _stateController,
-                      decoration: InputDecoration(labelText: 'State'),
+                      decoration: const InputDecoration(labelText: 'State'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your state';
@@ -207,7 +211,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _zipcodeController,
-                      decoration: InputDecoration(labelText: 'Zip Code'),
+                      decoration: const InputDecoration(labelText: 'Zip Code'),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -218,7 +222,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                     ),
                     TextFormField(
                       controller: _countryController,
-                      decoration: InputDecoration(labelText: 'Country'),
+                      decoration: const InputDecoration(labelText: 'Country'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your country';
@@ -226,20 +230,20 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
                           onPressed: _clearForm,
-                          child: Text('Clear'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
                           ),
+                          child: const Text('Clear'),
                         ),
                         ElevatedButton(
                           onPressed: _saveForm,
-                          child: Text('Save'),
+                          child: const Text('Save'),
                         ),
                       ],
                     ),

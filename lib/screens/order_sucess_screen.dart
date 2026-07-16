@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
+  const OrderSuccessScreen({super.key});
+
   // final double totalAmount;
   // final List<Map<String, dynamic>> orderedItems;
   // final Map<String, dynamic> shippingAddress;
@@ -20,7 +22,7 @@ class OrderSuccessScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Success'),
+        title: const Text('Order Success'),
         automaticallyImplyLeading: false, // Prevents back navigation
       ),
       body: Padding(
@@ -28,24 +30,24 @@ class OrderSuccessScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Thank you for your purchase!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Your order has been placed successfully.',
               style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(
                     context); // Navigate back to the main screen or home
               },
-              child: Text('Continue Shopping'),
+              child: const Text('Continue Shopping'),
             ),
           ],
         ),

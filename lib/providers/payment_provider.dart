@@ -1,3 +1,5 @@
+// ignore_for_file: use_rethrow_when_possible, avoid_print, prefer_const_declarations
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

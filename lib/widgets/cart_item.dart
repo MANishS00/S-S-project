@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +34,7 @@ class CartItemWidget extends StatelessWidget {
           // ),
           title: Text(
             cartItem.product.name,
-            style: TextStyle(overflow: TextOverflow.ellipsis),
+            style: const TextStyle(overflow: TextOverflow.ellipsis),
             maxLines: 2,
           ),
           subtitle: Text(

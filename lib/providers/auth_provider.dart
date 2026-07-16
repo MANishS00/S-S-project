@@ -44,7 +44,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> register(String email, String password1, String password2, String firstName, String lastName) async {
+  Future<void> register(String email, String password1, String password2, String firstName, String lastName, String uniqueId) async {
     final url = Uri.parse('${Config.baseUrl}/api/auth/users/');
     final response = await http.post(
       url,
@@ -54,6 +54,7 @@ class AuthProvider with ChangeNotifier {
         'password2': password2,
         'first_name': firstName,
         'last_name': lastName,
+        'unique_id': uniqueId, // Replace with actual unique ID if needed
       }),
       headers: {'Content-Type': 'application/json'},
     );

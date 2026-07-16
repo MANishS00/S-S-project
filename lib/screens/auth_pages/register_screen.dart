@@ -1,39 +1,43 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import 'profile_info_form.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? _email, _password1, _password2, _firstName, _lastName;
+  String? _email, _password1, _password2, _firstName, _lastName, _uniqueId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 "Sign Up",
                 style: TextStyle(fontSize: 50),
               ),
-              Text("Enter Your Credentials to continue"),
-              SizedBox(height: 20),
+              const Text("Enter Your Credentials to continue"),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "First Name",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.only(
@@ -49,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Last Name",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.only(
@@ -62,10 +66,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
+               Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: "Unique ID",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12)),
+                    ),
+                  ),
+                  onSaved: (value) {
+                    _uniqueId = value;
+                  },
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.only(
@@ -87,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.only(
@@ -110,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Confirm Password",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.only(
@@ -130,13 +150,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: SizedBox(
                   height: 50,width: 150,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff024874),
+                      backgroundColor: const Color(0xff024874),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -144,32 +164,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
-                        if (_email != null && _password1 != null && _password2 != null && _firstName != null && _lastName != null) {
+                        if (_email != null && _password1 != null && _password2 != null && _firstName != null && _lastName != null && _uniqueId != null) {
                           try {
                             await Provider.of<AuthProvider>(context, listen: false)
-                                .register(_email!, _password1!, _password2!, _firstName!, _lastName!);
+                                .register(_email!, _password1!, _password2!, _firstName!, _lastName!, _uniqueId!);
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => ProfileFormScreen()),
+                              MaterialPageRoute(builder: (context) => const ProfileFormScreen()),
                             );
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Registration failed')),
+                              const SnackBar(content: Text('Registration failed')),
                             );
                           }
                         }
                       }
                     },
-                    child: Text('Register',style: TextStyle(color: Colors.white),),
+                    child: const Text('Register',style: TextStyle(color: Colors.white),),
                   ),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already Have an Account? "),
+                  const Text("Already Have an Account? "),
                   TextButton(
                       onPressed: () {Navigator.pushNamed(context, '/login');},
-                      child: Text(
+                      child: const Text(
                         "Signin",
                         style: TextStyle(color: Color(0xff024874)),
                       ))

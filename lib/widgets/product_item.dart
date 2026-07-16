@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
@@ -17,7 +19,7 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     bool isOnSale = widget.product.isSale;
-    bool isNew = widget.product.isNew;
+    bool isInStock = widget.product.inStock;
     double salePrice = widget.product.salePrice ?? widget.product.price;
     double? discountPercentage = widget.product.percentageDiscount;
 
@@ -153,7 +155,7 @@ class _ProductItemState extends State<ProductItem> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  '-${discountPercentage?.toStringAsFixed(0)}%',
+                  '-${discountPercentage.toStringAsFixed(0)}%',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
@@ -162,7 +164,7 @@ class _ProductItemState extends State<ProductItem> {
                 ),
               ),
             ),
-          if (isNew)
+          if (isInStock)
             Positioned(
               top: 8,
               left: 2,

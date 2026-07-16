@@ -10,6 +10,8 @@ import 'home_view/product_view.dart';
 import 'auth_pages/login_screen.dart';
 
 class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -17,15 +19,15 @@ class CartScreen extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       body: cartItems.isEmpty
           ? SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(18.0),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 150),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 150),
                       child: Center(
                         child: Text(
                           'Your cart is empty',
@@ -34,9 +36,9 @@ class CartScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(color: Color(0xffA6B1E1)),
-                      padding: EdgeInsets.only(top: 8, bottom: 8),
-                      child: Row(
+                      decoration: const BoxDecoration(color: Color(0xffA6B1E1)),
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Center(
@@ -49,7 +51,7 @@ class CartScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    ProductsView(), // list the products
+                    const ProductsView(), // list the products
                   ],
                 ),
               ),
@@ -102,7 +104,7 @@ class CartScreen extends StatelessWidget {
           height: 50,
               child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xff424874),
+              backgroundColor: const Color(0xff424874),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -110,7 +112,7 @@ class CartScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                   },
                   child: const Text('Continue Shopping',style: TextStyle(color: Colors.white),),
@@ -120,7 +122,7 @@ class CartScreen extends StatelessWidget {
           height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff424874),
+                  backgroundColor: const Color(0xff424874),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -131,13 +133,13 @@ class CartScreen extends StatelessWidget {
                       // If authenticated, navigate to the checkout screen
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CheckoutScreen()),
+                        MaterialPageRoute(builder: (context) => const CheckoutScreen()),
                       );
                     } else {
                       // If not authenticated, navigate to the login screen
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
                       );
                     }
                   },

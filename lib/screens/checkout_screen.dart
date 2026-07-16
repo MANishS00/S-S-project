@@ -1,14 +1,16 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart.dart';
-import '../providers/auth_provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/shipping_address_provider.dart';
 import '../widgets/cart_item.dart';
-import 'payment_screen.dart';
 import 'shipping_address_form_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
+  const CheckoutScreen({super.key});
+
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
 }
@@ -30,15 +32,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final shippingProvider = Provider.of<ShippingAddressProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
     final cartItems = cartProvider.cartItems.values.toList();
     final shippingAddress = shippingProvider.shippingAddress;
 
     double totalAmount = cartProvider.totalAmount;
-    List<Map<String, dynamic>> convertedCartItems = convertCartItems(cartItems);
 
     // Ensure user is authenticated and has a userId
-    final userId = authProvider.isAuthenticated ? authProvider.userId : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -95,7 +94,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ShippingAddressForm(),
+                              builder: (context) => const ShippingAddressForm(),
                             ),
                           ).then((_) => _loadShippingAddress());
                         },
@@ -123,7 +122,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ShippingAddressForm(),
+                          builder: (context) => const ShippingAddressForm(),
                         ),
                       ).then((_) => _loadShippingAddress());
                     },
@@ -145,7 +144,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: Colors.orange),
+        decoration: const BoxDecoration(color: Colors.orange),
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

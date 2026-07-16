@@ -7,7 +7,7 @@ import '../../widgets/product_item.dart'; // Import the ProductItem widget
 class CategoryItemsScreen extends StatelessWidget {
   final Category category;
 
-  const CategoryItemsScreen({Key? key, required this.category}) : super(key: key);
+  const CategoryItemsScreen({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CategoryItemsScreen extends StatelessWidget {
       body: Consumer<ProductProvider>(
         builder: (context, productProvider, child) {
           final categoryProducts = productProvider.products.where((product) {
-            return product.category.id == category.id;
+            return product.category!.id == category.id;
           }).toList();
 
           if (categoryProducts.isEmpty) {

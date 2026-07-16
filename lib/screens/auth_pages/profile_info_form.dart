@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../../providers/profile_provider.dart';
 
 class ProfileFormScreen extends StatefulWidget {
+  const ProfileFormScreen({super.key});
+
   @override
   _ProfileFormScreenState createState() => _ProfileFormScreenState();
 }
@@ -111,7 +115,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF4EEFF),
+      backgroundColor: const Color(0xffF4EEFF),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -119,8 +123,8 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Text("Complete Your Profile",style: TextStyle(fontSize: 20),),
-                SizedBox(height: 20),
+                const Text("Complete Your Profile",style: TextStyle(fontSize: 20),),
+                const SizedBox(height: 20),
                 GestureDetector(
                   onTap: _pickImage,
                   child: _imageFile != null
@@ -137,7 +141,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
                               width: 150,
                               fit: BoxFit.cover,
                             )
-                          : Icon(Icons.image, size: 150),
+                          : const Icon(Icons.image, size: 150),
                 ),
                 // ElevatedButton(
                 //   onPressed: _pickImage,
@@ -157,13 +161,13 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
                   width: 150,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff024874),
+                      backgroundColor: const Color(0xff024874),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     onPressed: _submitProfile,
-                    child: Text(
+                    child: const Text(
                       'Submit',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -175,7 +179,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/home');
                       },
-                      child: Text("Skip")),
+                      child: const Text("Skip")),
                 ),
               ],
             ),
@@ -193,7 +197,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
         controller: controller,
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12), bottomRight: Radius.circular(12)),
           ),

@@ -5,7 +5,7 @@ import '../../providers/product_provider.dart';
 import '../../widgets/product_item.dart';
 
 class DealsView extends StatelessWidget {
-  const DealsView({Key? key}) : super(key: key);
+  const DealsView({super.key});
 
   @override
   Widget build(BuildContext context) {

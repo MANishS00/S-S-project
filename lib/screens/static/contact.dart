@@ -1,9 +1,13 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ContactUsPage extends StatefulWidget {
+  const ContactUsPage({super.key});
+
   @override
   _ContactUsPageState createState() => _ContactUsPageState();
 }
@@ -37,7 +41,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Message sent successfully!')),
+          const SnackBar(content: Text('Message sent successfully!')),
         );
         _formKey.currentState!.reset();
       } else {
@@ -53,7 +57,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
     return Scaffold(
       backgroundColor: Colors.grey[150],
       appBar: AppBar(
-        title: Text('Send Us a message'),
+        title: const Text('Send Us a message'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -123,10 +127,10 @@ class _ContactUsPageState extends State<ContactUsPage> {
                   ),
                   const SizedBox(height: 20),
                   _isLoading
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text('Submit'),
+                          child: const Text('Submit'),
                         ),
                 ],
               ),
@@ -137,15 +141,15 @@ class _ContactUsPageState extends State<ContactUsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: FaIcon(FontAwesomeIcons.facebookF, color: Colors.blue, size: 30,), onPressed: () {  },
+                    icon: const FaIcon(FontAwesomeIcons.facebookF, color: Colors.blue, size: 30,), onPressed: () {  },
                   ),
                   const SizedBox(width: 5),
                   IconButton(
-                    icon: FaIcon(FontAwesomeIcons.xTwitter, color: Colors.blue, size: 30,), onPressed: () {  },
+                    icon: const FaIcon(FontAwesomeIcons.xTwitter, color: Colors.blue, size: 30,), onPressed: () {  },
                   ),
                   const SizedBox(width: 5),
                   IconButton(
-                    icon: FaIcon(FontAwesomeIcons.instagram, color: Colors.blue, size: 30,), onPressed: () {  },
+                    icon: const FaIcon(FontAwesomeIcons.instagram, color: Colors.blue, size: 30,), onPressed: () {  },
                   )
               
                 ],
