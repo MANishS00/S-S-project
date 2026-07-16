@@ -21,7 +21,7 @@ class ProductViewModel with ChangeNotifier {
     try {
       _products = await _repository.fetchProducts();
     } catch (e) {
-      rethrow;
+      // rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -34,7 +34,7 @@ class ProductViewModel with ChangeNotifier {
     try {
       _products = await _repository.fetchProductsByCategory(categoryId);
     } catch (e) {
-      rethrow;
+      // rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

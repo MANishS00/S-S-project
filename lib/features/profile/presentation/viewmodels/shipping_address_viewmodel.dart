@@ -27,7 +27,7 @@ class ShippingAddressViewModel with ChangeNotifier {
       _shippingAddress = await _repository.fetchShippingAddress(userId, token);
       notifyListeners();
     } catch (e) {
-      rethrow;
+      // // rethrow;
     }
   }
 
@@ -66,7 +66,7 @@ class ShippingAddressViewModel with ChangeNotifier {
       );
       await fetchShippingAddress();
     } catch (e) {
-      rethrow;
+      // rethrow;
     }
   }
 }

@@ -21,7 +21,7 @@ class BannerViewModel with ChangeNotifier {
     try {
       _banners = await _repository.fetchBanners();
     } catch (e) {
-      rethrow;
+      // rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -21,7 +21,7 @@ class CategoryViewModel with ChangeNotifier {
     try {
       _categories = await _repository.fetchCategories();
     } catch (e) {
-      rethrow;
+      // rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

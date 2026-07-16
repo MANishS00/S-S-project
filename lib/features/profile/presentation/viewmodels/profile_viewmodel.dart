@@ -28,7 +28,7 @@ class ProfileViewModel with ChangeNotifier {
       _profile = await _profileRepository.fetchProfile(userId, token);
       notifyListeners();
     } catch (e) {
-      rethrow;
+      // // rethrow;
     }
   }
 
@@ -65,7 +65,7 @@ class ProfileViewModel with ChangeNotifier {
       );
       notifyListeners();
     } catch (e) {
-      rethrow;
+      // rethrow;
     }
   }
 }

@@ -38,7 +38,7 @@ class CheckoutViewModel with ChangeNotifier {
         items: items,
       );
     } catch (e) {
-      rethrow;
+      // rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -67,7 +67,7 @@ class CheckoutViewModel with ChangeNotifier {
     try {
       await _paymentRepository.executePayment(paymentId, payerId);
     } catch (e) {
-      rethrow;
+      // rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

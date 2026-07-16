@@ -35,7 +35,7 @@ class AuthViewModel with ChangeNotifier {
       _isAuthenticated = true;
       notifyListeners();
     } catch (e) {
-      rethrow;
+      // // rethrow;
     }
   }
 
@@ -58,7 +58,7 @@ class AuthViewModel with ChangeNotifier {
       );
       await login(email, password1);
     } catch (e) {
-      rethrow;
+      // rethrow;
     }
   }
 
@@ -71,7 +71,7 @@ class AuthViewModel with ChangeNotifier {
       _userEmail = _user?.email;
       await _saveUserInfoToPrefs();
     } catch (e) {
-      rethrow;
+      // rethrow;
     }
   }
 

@@ -24,7 +24,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       final data = json.decode(response.body);
       return ProfileModel.fromJson(data);
     } else {
-      throw Exception('Failed to fetch profile. Error: ${response.body}');
+      throw Exception('Failed to fetch profile at $url. Status: ${response.statusCode}, Error: ${response.body}');
     }
   }
 
