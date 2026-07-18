@@ -1,27 +1,27 @@
+// import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:flutter/material.dart';
-// import 'package:carousel_slider/carousel_slider.dart' as slider;
 // import '../../data/models/banner_model.dart';
 // import '../../data/repositories/banner_repository_impl.dart';
-//
+
 // class BannerCarousel extends StatefulWidget {
 //   const BannerCarousel({Key? key}) : super(key: key);
-//
+
 //   @override
 //   _BannerCarouselState createState() => _BannerCarouselState();
 // }
-//
+
 // class _BannerCarouselState extends State<BannerCarousel> {
-//   final slider.CarouselController _controller = slider.CarouselController();
+//   final CarouselSliderController _controller = CarouselSliderController();
 //   int _current = 0;
 //   List<BannerModel> _banners = [];
 //   bool _isLoading = true;
-//
+
 //   @override
 //   void initState() {
 //     super.initState();
 //     _fetchBanners();
 //   }
-//
+
 //   Future<void> _fetchBanners() async {
 //     try {
 //       final banners = await BannerRepositoryImpl().fetchBanners();
@@ -35,16 +35,16 @@
 //       });
 //     }
 //   }
-//
+
 //   @override
 //   Widget build(BuildContext context) {
 //     if (_isLoading) {
 //       return Center(child: CircularProgressIndicator());
 //     }
-//
+
 //     return Column(
 //       children: [
-//         slider.CarouselSlider(
+//         CarouselSlider(
 //           items: _banners.map((banner) {
 //             return ClipRRect(
 //               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -57,7 +57,7 @@
 //             );
 //           }).toList(),
 //           carouselController: _controller,
-//           options: slider.CarouselOptions(
+//           options: CarouselOptions(
 //             height: 150.0,
 //             autoPlay: true,
 //             autoPlayInterval: const Duration(seconds: 5),

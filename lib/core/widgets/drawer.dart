@@ -57,12 +57,23 @@ Drawer appDrawer(BuildContext context) {
           text: 'Products',
           onTap: () => Navigator.pushNamed(context, '/product_list'),
         ),
-        if (authViewModel.isAuthenticated)
+        if (authViewModel.isAuthenticated) ...[
           _createDrawerItem(
             icon: Icons.person,
             text: 'Profile',
             onTap: () => Navigator.pushNamed(context, '/profile'),
           ),
+          _createDrawerItem(
+            icon: Icons.account_balance_wallet,
+            text: 'Wallet',
+            onTap: () => Navigator.pushNamed(context, '/wallet'),
+          ),
+          _createDrawerItem(
+            icon: Icons.group,
+            text: 'Referrals',
+            onTap: () => Navigator.pushNamed(context, '/referrals'),
+          ),
+        ],
         _createDrawerItem(
           icon: Icons.info,
           text: 'About',

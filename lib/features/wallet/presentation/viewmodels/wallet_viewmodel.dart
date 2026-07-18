@@ -10,7 +10,10 @@ class WalletViewModel with ChangeNotifier {
   WalletBalanceModel? _balance;
   List<PayoutRequestModel> _payoutRequests = [];
   List<WalletTransactionModel> _transactions = [];
-  bool _isLoading = false;
+  
+  bool _isBalanceLoading = false;
+  bool _isPayoutsLoading = false;
+  bool _isTransactionsLoading = false;
 
   WalletViewModel({WalletRepository? repository})
       : _repository = repository ?? WalletRepositoryImpl();
@@ -18,20 +21,22 @@ class WalletViewModel with ChangeNotifier {
   WalletBalanceModel? get balance => _balance;
   List<PayoutRequestModel> get payoutRequests => _payoutRequests;
   List<WalletTransactionModel> get transactions => _transactions;
-  bool get isLoading => _isLoading;
+
+  bool get isLoading => _isBalanceLoading || _isPayoutsLoading || _isTransactionsLoading;
 
   Future<void> fetchWalletBalance() async {
     final token = await TokenHelper.getValidToken();
     if (token == null) return;
 
-    _isLoading = true;
+    _isBalanceLoading = true;
     notifyListeners();
 
     try {
       _balance = await _repository.fetchWalletBalance(token);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Error fetching wallet balance: $e');
     } finally {
-      _isLoading = false;
+      _isBalanceLoading = false;
       notifyListeners();
     }
   }
@@ -40,14 +45,15 @@ class WalletViewModel with ChangeNotifier {
     final token = await TokenHelper.getValidToken();
     if (token == null) return;
 
-    _isLoading = true;
+    _isPayoutsLoading = true;
     notifyListeners();
 
     try {
       _payoutRequests = await _repository.fetchPayoutRequests(token);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Error fetching payout requests: $e');
     } finally {
-      _isLoading = false;
+      _isPayoutsLoading = false;
       notifyListeners();
     }
   }
@@ -56,14 +62,15 @@ class WalletViewModel with ChangeNotifier {
     final token = await TokenHelper.getValidToken();
     if (token == null) return;
 
-    _isLoading = true;
+    _isTransactionsLoading = true;
     notifyListeners();
 
     try {
       _transactions = await _repository.fetchWalletTransactions(token);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Error fetching transactions: $e');
     } finally {
-      _isLoading = false;
+      _isTransactionsLoading = false;
       notifyListeners();
     }
   }
@@ -74,7 +81,7 @@ class WalletViewModel with ChangeNotifier {
       throw Exception('Not authenticated');
     }
 
-    _isLoading = true;
+    _isBalanceLoading = true;
     notifyListeners();
 
     try {
@@ -82,9 +89,10 @@ class WalletViewModel with ChangeNotifier {
       await fetchWalletBalance();
       await fetchPayoutRequests();
     } catch (e) {
+      debugPrint('Error requesting withdrawal: $e');
       rethrow;
     } finally {
-      _isLoading = false;
+      _isBalanceLoading = false;
       notifyListeners();
     }
   }

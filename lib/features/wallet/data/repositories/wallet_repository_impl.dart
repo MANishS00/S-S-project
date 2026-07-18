@@ -37,9 +37,16 @@ class WalletRepositoryImpl implements WalletRepository {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final List<dynamic> results = data['results'] ?? [];
-      return results.map((e) => PayoutRequestModel.fromJson(e as Map<String, dynamic>)).toList();
+      final dynamic decoded = json.decode(response.body);
+      List<dynamic> list;
+      if (decoded is Map) {
+        list = decoded['results'] ?? [];
+      } else if (decoded is List) {
+        list = decoded;
+      } else {
+        list = [];
+      }
+      return list.map((e) => PayoutRequestModel.fromJson(e as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load payout requests: ${response.body}');
     }
@@ -56,9 +63,16 @@ class WalletRepositoryImpl implements WalletRepository {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final List<dynamic> results = data['results'] ?? [];
-      return results.map((e) => WalletTransactionModel.fromJson(e as Map<String, dynamic>)).toList();
+      final dynamic decoded = json.decode(response.body);
+      List<dynamic> list;
+      if (decoded is Map) {
+        list = decoded['results'] ?? [];
+      } else if (decoded is List) {
+        list = decoded;
+      } else {
+        list = [];
+      }
+      return list.map((e) => WalletTransactionModel.fromJson(e as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load wallet transactions: ${response.body}');
     }

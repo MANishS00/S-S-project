@@ -22,6 +22,8 @@ import 'features/static_pages/presentation/views/contact_screen.dart';
 import 'features/static_pages/presentation/views/help_screen.dart';
 import 'features/wallet/presentation/viewmodels/wallet_viewmodel.dart';
 import 'features/consultant/presentation/viewmodels/consultant_viewmodel.dart';
+import 'features/wallet/presentation/views/wallet_screen.dart';
+import 'features/profile/presentation/views/referrals_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +66,8 @@ class MyApp extends StatelessWidget {
         '/help': (context) => HelpPage(),
         '/contact': (context) => ContactUsPage(),
         '/order_sucess': (context) => OrderSuccessScreen(),
+        '/wallet': (context) => WalletScreen(),
+        '/referrals': (context) => ReferralsScreen(),
       },
     );
   }
