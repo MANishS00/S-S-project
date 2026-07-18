@@ -6,6 +6,7 @@ import '../../domain/repositories/profile_repository.dart';
 import '../models/profile_model.dart';
 import '../models/referral_model.dart';
 import '../models/bank_details_model.dart';
+import '../models/referral_tree_model.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final http.Client client;
@@ -138,6 +139,24 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return BankDetailsModel.fromJson(data);
     } else {
       throw Exception('Failed to submit bank details: ${response.body}');
+    }
+  }
+
+  @override
+  Future<List<ReferralTreeModel>> fetchReferralTree(String token) async {
+    final url = Uri.parse('${Config.baseUrl}/mlmtree/api/tree/');
+    final response = await client.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((e) => ReferralTreeModel.fromJson(e as Map<String, dynamic>)).toList();
+    } else {
+      throw Exception('Failed to fetch referral tree: ${response.body}');
     }
   }
 }
