@@ -10,8 +10,8 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
   ShippingAddressRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
 
   @override
-  Future<ShippingAddressModel?> fetchShippingAddress(int userId, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/shipping-address/$userId/');
+  Future<ShippingAddressModel?> fetchShippingAddress(String token) async {
+    final url = Uri.parse('${Config.baseUrl}/api/shipping-address/me/');
     final response = await client.get(
       url,
       headers: {
@@ -25,6 +25,8 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
         return ShippingAddressModel.fromJson(data.cast<String, dynamic>());
       }
       return null;
+    } else if (response.statusCode == 404) {
+      return null;
     } else {
       throw Exception('Failed to fetch shipping address. Status: ${response.statusCode}');
     }
@@ -32,7 +34,6 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
 
   @override
   Future<void> createOrUpdateShippingAddress(
-    int userId,
     String token, {
     String? phone,
     String? fullName,
@@ -44,7 +45,7 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
     String? zipcode,
     String? country,
   }) async {
-    final url = Uri.parse('${Config.baseUrl}/api/shipping-address/$userId/');
+    final url = Uri.parse('${Config.baseUrl}/api/shipping-address/me/');
     final response = await client.put(
       url,
       headers: {

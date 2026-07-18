@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
 import '../../domain/repositories/profile_repository.dart';
 import '../models/profile_model.dart';
+import '../models/referral_model.dart';
+import '../models/bank_details_model.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final http.Client client;
@@ -11,8 +13,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
   ProfileRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
 
   @override
-  Future<ProfileModel> fetchProfile(int userId, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/profile/$userId/');
+  Future<ProfileModel> fetchProfile(String token) async {
+    final url = Uri.parse('${Config.baseUrl}/api/profile/me/');
     final response = await client.get(
       url,
       headers: {
@@ -30,7 +32,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ProfileModel> updateProfile(
-    int userId,
     String token, {
     File? image,
     String? phone,
@@ -41,8 +42,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String? zipcode,
     String? country,
   }) async {
-    final url = Uri.parse('${Config.baseUrl}/api/profile/$userId/');
-    final request = http.MultipartRequest('PUT', url);
+    final url = Uri.parse('${Config.baseUrl}/api/profile/me/');
+    final request = http.MultipartRequest('PATCH', url);
     request.headers['Authorization'] = 'Bearer $token';
 
     if (phone != null) request.fields['phone'] = phone;
@@ -72,6 +73,71 @@ class ProfileRepositoryImpl implements ProfileRepository {
       }
     } catch (error) {
       throw Exception('Failed to update profile: $error');
+    }
+  }
+
+  @override
+  Future<List<ReferralModel>> fetchReferrals(String token) async {
+    final url = Uri.parse('${Config.baseUrl}/api/user/referrals/');
+    final response = await client.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((e) => ReferralModel.fromJson(e as Map<String, dynamic>)).toList();
+    } else {
+      throw Exception('Failed to fetch referrals: ${response.body}');
+    }
+  }
+
+  @override
+  Future<BankDetailsModel?> fetchBankDetails(String token) async {
+    final url = Uri.parse('${Config.baseUrl}/api/users/get-bank-details/');
+    final response = await client.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return BankDetailsModel.fromJson(data);
+    } else if (response.statusCode == 404) {
+      return null;
+    } else {
+      throw Exception('Failed to fetch bank details: ${response.body}');
+    }
+  }
+
+  @override
+  Future<BankDetailsModel> submitBankDetails(BankDetailsModel details, String token) async {
+    final url = Uri.parse('${Config.baseUrl}/api/users/bank-details/');
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode({
+        'account_holder_name': details.accountHolderName,
+        'email': details.email,
+        'phone_number': details.phoneNumber,
+        'contact_type': details.contactType,
+        'account_number': details.accountNumber,
+        'ifsc_code': details.ifscCode,
+      }),
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return BankDetailsModel.fromJson(data);
+    } else {
+      throw Exception('Failed to submit bank details: ${response.body}');
     }
   }
 }

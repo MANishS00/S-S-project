@@ -20,6 +20,8 @@ import 'features/home/presentation/views/home_page.dart';
 import 'features/static_pages/presentation/views/about_screen.dart';
 import 'features/static_pages/presentation/views/contact_screen.dart';
 import 'features/static_pages/presentation/views/help_screen.dart';
+import 'features/wallet/presentation/viewmodels/wallet_viewmodel.dart';
+import 'features/consultant/presentation/viewmodels/consultant_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => CartViewModel()),
         ChangeNotifierProvider(create: (_) => CategoryViewModel()),
         ChangeNotifierProvider(create: (_) => CheckoutViewModel()),
+        ChangeNotifierProvider(create: (_) => WalletViewModel()),
+        ChangeNotifierProvider(create: (_) => ConsultantViewModel()),
       ],
       child: MyApp(),
     ),

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../data/repositories/auth_repository_impl.dart';
+import '../../../../core/utils/token_helper.dart';
 
 class AuthViewModel with ChangeNotifier {
   final AuthRepository _authRepository;
@@ -25,9 +26,13 @@ class AuthViewModel with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     try {
-      _token = await _authRepository.login(email, password);
+      final tokenData = await _authRepository.login(email, password);
+      _token = tokenData['access'];
+      final refreshToken = tokenData['refresh'];
+      
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', _token!);
+      await prefs.setString('refreshToken', refreshToken!);
 
       // Fetch user details
       await _fetchUserDetails();
@@ -101,6 +106,7 @@ class AuthViewModel with ChangeNotifier {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('refreshToken');
     await prefs.remove('userName');
     await prefs.remove('userEmail');
     await prefs.remove('userId');
@@ -112,19 +118,43 @@ class AuthViewModel with ChangeNotifier {
     _token = prefs.getString('token');
     _userId = prefs.getInt('userId');
     if (_token != null && _userId != null) {
-      _isAuthenticated = true;
-      await _loadUserInfoFromPrefs();
+      // Validate token or refresh in background
+      try {
+        final validToken = await TokenHelper.getValidToken();
+        if (validToken != null) {
+          _token = validToken;
+          _isAuthenticated = true;
+          await _loadUserInfoFromPrefs();
+        } else {
+          await logout();
+        }
+      } catch (_) {
+        _isAuthenticated = true;
+        await _loadUserInfoFromPrefs();
+      }
       notifyListeners();
     }
   }
 
   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    return await TokenHelper.getValidToken();
   }
 
   Future<int?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('userId');
+  }
+
+  Future<void> resetPassword(String email) async {
+    await _authRepository.resetPassword(email);
+  }
+
+  Future<void> setPassword(String currentPassword, String newPassword) async {
+    final token = await getToken();
+    if (token != null) {
+      await _authRepository.setPassword(currentPassword, newPassword, token);
+    } else {
+      throw Exception('Not authenticated');
+    }
   }
 }

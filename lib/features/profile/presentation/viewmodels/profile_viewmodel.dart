@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/profile_model.dart';
+import '../../data/models/referral_model.dart';
+import '../../data/models/bank_details_model.dart';
 import '../../domain/repositories/profile_repository.dart';
 import '../../data/repositories/profile_repository_impl.dart';
+import '../../../../core/utils/token_helper.dart';
 
 class ProfileViewModel with ChangeNotifier {
   final ProfileRepository _profileRepository;
@@ -16,8 +19,8 @@ class ProfileViewModel with ChangeNotifier {
   ProfileModel? get profile => _profile;
 
   Future<void> fetchProfile() async {
+    final token = await TokenHelper.getValidToken();
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
     final userId = prefs.getInt('userId');
 
     if (token == null || userId == null) {
@@ -25,7 +28,7 @@ class ProfileViewModel with ChangeNotifier {
     }
 
     try {
-      _profile = await _profileRepository.fetchProfile(userId, token);
+      _profile = await _profileRepository.fetchProfile(token);
       notifyListeners();
     } catch (e) {
       // // rethrow;
@@ -42,8 +45,8 @@ class ProfileViewModel with ChangeNotifier {
     String? zipcode,
     String? country,
   }) async {
+    final token = await TokenHelper.getValidToken();
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
     final userId = prefs.getInt('userId');
 
     if (token == null || userId == null) {
@@ -52,7 +55,6 @@ class ProfileViewModel with ChangeNotifier {
 
     try {
       _profile = await _profileRepository.updateProfile(
-        userId,
         token,
         image: image,
         phone: phone,
@@ -67,5 +69,38 @@ class ProfileViewModel with ChangeNotifier {
     } catch (e) {
       // rethrow;
     }
+  }
+
+  List<ReferralModel> _referrals = [];
+  List<ReferralModel> get referrals => _referrals;
+
+  BankDetailsModel? _bankDetails;
+  BankDetailsModel? get bankDetails => _bankDetails;
+
+  Future<void> fetchReferrals() async {
+    final token = await TokenHelper.getValidToken();
+    if (token == null) return;
+    try {
+      _referrals = await _profileRepository.fetchReferrals(token);
+      notifyListeners();
+    } catch (_) {}
+  }
+
+  Future<void> fetchBankDetails() async {
+    final token = await TokenHelper.getValidToken();
+    if (token == null) return;
+    try {
+      _bankDetails = await _profileRepository.fetchBankDetails(token);
+      notifyListeners();
+    } catch (_) {}
+  }
+
+  Future<void> submitBankDetails(BankDetailsModel details) async {
+    final token = await TokenHelper.getValidToken();
+    if (token == null) return;
+    try {
+      _bankDetails = await _profileRepository.submitBankDetails(details, token);
+      notifyListeners();
+    } catch (_) {}
   }
 }

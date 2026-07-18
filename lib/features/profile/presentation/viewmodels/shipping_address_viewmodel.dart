@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/shipping_address_model.dart';
 import '../../domain/repositories/shipping_address_repository.dart';
 import '../../data/repositories/shipping_address_repository_impl.dart';
+import '../../../../core/utils/token_helper.dart';
 
 class ShippingAddressViewModel with ChangeNotifier {
   final ShippingAddressRepository _repository;
@@ -15,8 +16,8 @@ class ShippingAddressViewModel with ChangeNotifier {
   ShippingAddressModel? get shippingAddress => _shippingAddress;
 
   Future<void> fetchShippingAddress() async {
+    final token = await TokenHelper.getValidToken();
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
     final userId = prefs.getInt('userId');
 
     if (token == null || userId == null) {
@@ -24,7 +25,7 @@ class ShippingAddressViewModel with ChangeNotifier {
     }
 
     try {
-      _shippingAddress = await _repository.fetchShippingAddress(userId, token);
+      _shippingAddress = await _repository.fetchShippingAddress(token);
       notifyListeners();
     } catch (e) {
       // // rethrow;
@@ -42,8 +43,8 @@ class ShippingAddressViewModel with ChangeNotifier {
     String? zipcode,
     String? country,
   }) async {
+    final token = await TokenHelper.getValidToken();
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
     final userId = prefs.getInt('userId');
 
     if (token == null || userId == null) {
@@ -52,7 +53,6 @@ class ShippingAddressViewModel with ChangeNotifier {
 
     try {
       await _repository.createOrUpdateShippingAddress(
-        userId,
         token,
         phone: phone,
         fullName: fullName,

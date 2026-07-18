@@ -1,9 +1,8 @@
 import '../../data/models/shipping_address_model.dart';
 
 abstract class ShippingAddressRepository {
-  Future<ShippingAddressModel?> fetchShippingAddress(int userId, String token);
+  Future<ShippingAddressModel?> fetchShippingAddress(String token);
   Future<void> createOrUpdateShippingAddress(
-    int userId,
     String token, {
     String? phone,
     String? fullName,

@@ -15,7 +15,8 @@ class BannerRepositoryImpl implements BannerRepository {
     final response = await client.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+      final dynamic decoded = jsonDecode(response.body);
+      final List<dynamic> data = (decoded is Map) ? (decoded['results'] ?? []) : decoded;
       return data.map((item) => BannerModel.fromJson(item as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load banners');

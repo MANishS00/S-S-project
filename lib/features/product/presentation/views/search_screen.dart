@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../data/models/product_model.dart';
 import '../viewmodels/product_viewmodel.dart';
 import 'product_item_widget.dart';
 
@@ -13,16 +12,12 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  List<ProductModel> _searchResults = [];
-  bool _isLoading = true;
+  bool _isLoading = false;
 
-  void _searchProducts() {
-    final query = _searchController.text.toLowerCase();
+  void _searchProducts() async {
+    final query = _searchController.text.trim();
 
     if (query.isEmpty) {
-      setState(() {
-        _searchResults = [];
-      });
       return;
     }
 
@@ -31,35 +26,10 @@ class _SearchScreenState extends State<SearchScreen> {
     });
 
     final productVM = Provider.of<ProductViewModel>(context, listen: false);
-    final allProducts = productVM.products;
+    await productVM.searchProducts(query);
 
     setState(() {
-      _searchResults = allProducts.where((product) {
-        return product.name.toLowerCase().contains(query) ||
-            (product.category?.name.toLowerCase().contains(query) ?? false) ||
-            (product.color?.toLowerCase().contains(query) ?? false) ||
-            (product.keyWords?.toLowerCase().contains(query) ?? false) ||
-            (product.brand?.toLowerCase().contains(query) ?? false) ||
-            (product.material?.toLowerCase().contains(query) ?? false);
-      }).toList();
       _isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final productVM = Provider.of<ProductViewModel>(context, listen: false);
-      productVM.fetchProducts().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      }).catchError((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
     });
   }
 
@@ -71,6 +41,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final productVM = Provider.of<ProductViewModel>(context);
+    final results = productVM.searchResults;
+
     return Scaffold(
       appBar: AppBar(
         title: TextField(
@@ -87,8 +60,8 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _searchResults.isEmpty
-              ? const Center(child: Text('No products found.'))
+          : results.isEmpty
+              ? const Center(child: Text('Search for products by entering a query.'))
               : GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
@@ -96,9 +69,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
                   ),
-                  itemCount: _searchResults.length,
+                  itemCount: results.length,
                   itemBuilder: (ctx, index) {
-                    final product = _searchResults[index];
+                    final product = results[index];
                     return ProductItem(product: product);
                   },
                 ),
