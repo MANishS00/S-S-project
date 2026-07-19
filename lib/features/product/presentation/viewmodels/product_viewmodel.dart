@@ -92,4 +92,17 @@ class ProductViewModel with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<ProductModel?> fetchProductById(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      return await _repository.fetchProductById(id);
+    } catch (_) {
+      return null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

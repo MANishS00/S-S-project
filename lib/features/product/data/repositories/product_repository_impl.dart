@@ -83,4 +83,17 @@ class ProductRepositoryImpl implements ProductRepository {
         '${Config.baseUrl}/api/products/search/?query=${Uri.encodeComponent(query)}');
     return _fetchProductsFromUrl(url, 'Failed to search products');
   }
+
+  @override
+  Future<ProductModel> fetchProductById(int id) async {
+    final url = Uri.parse('${Config.baseUrl}/api/products/$id/');
+    final response = await client.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic decoded = jsonDecode(response.body);
+      return ProductModel.fromJson(decoded as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to load product details for ID: $id');
+    }
+  }
 }

@@ -7,4 +7,5 @@ abstract class ProductRepository {
   Future<List<ProductModel>> fetchRecentProducts();
   Future<List<ProductModel>> fetchSaleProducts();
   Future<List<ProductModel>> searchProducts(String query);
+  Future<ProductModel> fetchProductById(int id);
 }

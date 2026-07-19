@@ -87,6 +87,27 @@ class ProfileScreen extends StatelessWidget {
                         },
                         child: const Text('My Referrals'),
                       ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/order_history');
+                        },
+                        child: const Text('Order History'),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/bank_details');
+                        },
+                        child: const Text('Bank Details'),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/contact');
+                        },
+                        child: const Text('Consultant'),
+                      ),
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {

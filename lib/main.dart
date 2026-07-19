@@ -24,6 +24,8 @@ import 'features/wallet/presentation/viewmodels/wallet_viewmodel.dart';
 import 'features/consultant/presentation/viewmodels/consultant_viewmodel.dart';
 import 'features/wallet/presentation/views/wallet_screen.dart';
 import 'features/profile/presentation/views/referrals_screen.dart';
+import 'features/profile/presentation/views/bank_details_screen.dart';
+import 'features/checkout/presentation/views/order_history_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +70,8 @@ class MyApp extends StatelessWidget {
         '/order_sucess': (context) => OrderSuccessScreen(),
         '/wallet': (context) => WalletScreen(),
         '/referrals': (context) => ReferralsScreen(),
+        '/bank_details': (context) => BankDetailsScreen(),
+        '/order_history': (context) => OrderHistoryScreen(),
       },
     );
   }

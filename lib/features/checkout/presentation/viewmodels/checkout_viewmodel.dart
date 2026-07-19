@@ -3,6 +3,8 @@ import '../../domain/repositories/order_repository.dart';
 import '../../domain/repositories/payment_repository.dart';
 import '../../data/repositories/order_repository_impl.dart';
 import '../../data/repositories/payment_repository_impl.dart';
+import '../../data/models/order_history_model.dart';
+import '../../../../core/utils/token_helper.dart';
 
 class CheckoutViewModel with ChangeNotifier {
   final OrderRepository _orderRepository;
@@ -68,6 +70,26 @@ class CheckoutViewModel with ChangeNotifier {
       await _paymentRepository.executePayment(paymentId, payerId);
     } catch (e) {
       // rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  List<OrderHistoryModel> _orderHistory = [];
+  List<OrderHistoryModel> get orderHistory => _orderHistory;
+
+  Future<void> fetchOrderHistory() async {
+    final token = await TokenHelper.getValidToken();
+    if (token == null) return;
+
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _orderHistory = await _orderRepository.fetchOrderHistory(token);
+    } catch (_) {
+      _orderHistory = [];
     } finally {
       _isLoading = false;
       notifyListeners();
