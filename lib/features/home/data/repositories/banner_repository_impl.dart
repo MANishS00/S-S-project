@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/banner_repository.dart';
 import '../models/banner_model.dart';
 
 class BannerRepositoryImpl implements BannerRepository {
   final http.Client client;
 
-  BannerRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  BannerRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<List<BannerModel>> fetchBanners() async {

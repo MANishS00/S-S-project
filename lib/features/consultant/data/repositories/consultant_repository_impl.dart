@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/consultant_repository.dart';
 
 class ConsultantRepositoryImpl implements ConsultantRepository {
   final http.Client client;
 
-  ConsultantRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  ConsultantRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<void> submitConsultantRequest({

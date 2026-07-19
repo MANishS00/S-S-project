@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final http.Client client;
 
-  AuthRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  AuthRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<Map<String, String>> login(String email, String password) async {

@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/order_repository.dart';
 
 class OrderRepositoryImpl implements OrderRepository {
   final http.Client client;
 
-  OrderRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  OrderRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<void> createOrder({

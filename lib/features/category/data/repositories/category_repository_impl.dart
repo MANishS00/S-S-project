@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/category_repository.dart';
 import '../models/category_model.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   final http.Client client;
 
-  CategoryRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  CategoryRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<List<CategoryModel>> fetchCategories() async {

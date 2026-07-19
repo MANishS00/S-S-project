@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/wallet_repository.dart';
 import '../../data/models/wallet_models.dart';
 
 class WalletRepositoryImpl implements WalletRepository {
   final http.Client client;
 
-  WalletRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  WalletRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<WalletBalanceModel> fetchWalletBalance(String token) async {

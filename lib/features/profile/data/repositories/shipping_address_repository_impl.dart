@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/shipping_address_repository.dart';
 import '../models/shipping_address_model.dart';
 
 class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
   final http.Client client;
 
-  ShippingAddressRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  ShippingAddressRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<ShippingAddressModel?> fetchShippingAddress(String token) async {

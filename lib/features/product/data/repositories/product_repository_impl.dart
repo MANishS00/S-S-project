@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../models/product_model.dart';
 
@@ -8,7 +9,7 @@ class ProductRepositoryImpl implements ProductRepository {
   final http.Client client;
 
   ProductRepositoryImpl({http.Client? client})
-      : client = client ?? http.Client();
+      : client = client ?? LoggingHttpClient();
 
   @override
   Future<List<ProductModel>> fetchProducts() async {

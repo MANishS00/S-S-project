@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/profile_repository.dart';
 import '../models/profile_model.dart';
 import '../models/referral_model.dart';
@@ -11,7 +12,7 @@ import '../models/referral_tree_model.dart';
 class ProfileRepositoryImpl implements ProfileRepository {
   final http.Client client;
 
-  ProfileRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  ProfileRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<ProfileModel> fetchProfile(String token) async {
@@ -63,7 +64,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     try {
-      final streamedResponse = await request.send();
+      final streamedResponse = await client.send(request);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {

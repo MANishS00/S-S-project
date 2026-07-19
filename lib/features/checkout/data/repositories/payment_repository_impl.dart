@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/payment_repository.dart';
 
 class PaymentRepositoryImpl implements PaymentRepository {
   final http.Client client;
 
-  PaymentRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  PaymentRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   @override
   Future<Map<String, dynamic>> initiatePayment(

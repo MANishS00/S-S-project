@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 
 class ContactUsPage extends StatefulWidget {
   const ContactUsPage({super.key});
@@ -25,7 +25,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
       });
 
       try {
-        final response = await http.post(
+        final response = await LoggingHttpClient().post(
           Uri.parse('${Config.baseUrl}/api/contact/'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({

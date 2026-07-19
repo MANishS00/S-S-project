@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../../core/config/config.dart';
+import '../../../../core/network/logging_http_client.dart';
 import '../../domain/repositories/cart_repository.dart';
 import '../../data/models/cart_item_model.dart';
 
 class CartRepositoryImpl implements CartRepository {
   final http.Client client;
 
-  CartRepositoryImpl({http.Client? client}) : client = client ?? http.Client();
+  CartRepositoryImpl({http.Client? client}) : client = client ?? LoggingHttpClient();
 
   List<CartItemModel> _parseCartResponse(String body) {
     final Map<String, dynamic> data = json.decode(body);
