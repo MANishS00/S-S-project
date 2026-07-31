@@ -1,10 +1,10 @@
+import 'package:app/features/wallet/presentation/views/wallet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/widgets/drawer.dart';
 import '../../../cart/presentation/viewmodels/cart_viewmodel.dart';
 import '../../../cart/presentation/views/cart_screen.dart';
 import '../../../category/presentation/views/categories_screen.dart';
-import '../../../product/presentation/views/deals_screen.dart';
 import '../../../product/presentation/views/search_screen.dart';
 import '../../../profile/presentation/views/profile_screen.dart';
 import 'home_screen.dart';
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     const CategoriesScreen(),
-    const DealsScreen(),
+    const WalletScreen(), 
     const HomeScreen(),
     const CartScreen(),
     const ProfileScreen(),
@@ -39,21 +39,21 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: const Color(0xffF4EEFF),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffF4EEFF),
-        title: const Center(child: Text('Sales & Service')),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchScreen()),
-              );
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+        // backgroundColor: const Color(0xffF4EEFF),
+        // title: const Center(child: Text('Sales & Service')),
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.search),
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+                // MaterialPageRoute(builder: (context) => const SearchScreen()),
+        //       );
+        //     },
+        //   ),
+        // ],
+      // ),
       drawer: appDrawer(context),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Categories',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.local_offer_outlined),
-            label: 'Deals',
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            label: 'Wallet',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.home),

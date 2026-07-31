@@ -1,14 +1,19 @@
+import 'package:app/core/widgets/drawer.dart';
+import 'package:app/features/product/presentation/views/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../category/presentation/viewmodels/category_viewmodel.dart';
-import '../../../category/presentation/views/category_view.dart';
 import '../../../product/presentation/viewmodels/product_viewmodel.dart';
-import '../../../product/presentation/views/deals_screen.dart';
-import '../../../product/presentation/views/deals_view.dart';
 import '../../../product/presentation/views/product_view.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -16,93 +21,110 @@ class HomeScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
             create: (_) => ProductViewModel()..fetchProducts()),
-        ChangeNotifierProvider(
-            create: (_) => CategoryViewModel()..fetchCategories()),
       ],
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Consumer<ProductViewModel>(
-            builder: (context, productVM, _) {
-              return Column(
-                children: [
-                  CategoryView(
-                    categories:
-                        Provider.of<CategoryViewModel>(context).categories,
-                  ),
-                  const SizedBox(height: 5),
-                  // const BannerCarousel(),
-                  const SizedBox(height: 5),
-                  Container(
-                    decoration: const BoxDecoration(color: Color(0xffA6B1E1)),
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Deals',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const DealsScreen(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                'See More',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
-                            ),
-                            const Icon(
-                              Icons.keyboard_double_arrow_right,
-                              size: 16.0,
-                              color: Colors.white,
-                            ),
-                          ],
-                        )
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: appDrawer(context),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 170,
+              child: Stack(children: [
+                Container(
+                  height: 120,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      colors: [
+                        Color(0xFFd7eaff),
+                        Color(0xFFE3F2FD),
                       ],
                     ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const DealsView(),
-                  Container(
-                    decoration: const BoxDecoration(color: Color(0xffA6B1E1)),
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Products',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                // Add products list navigation if needed
-                              },
-                              child: const Text(
-                                'See More',
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
+                ),
+                Positioned(
+                    bottom: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SearchScreen()),
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width - 35,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.search, color: Colors.grey),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Search products...',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
                             ),
-                          ],
-                        )
-                      ],
-                    ),
+                          ),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                  top: 40,
+                  left: 12,
+                  right: 12,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () =>
+                            _scaffoldKey.currentState?.openDrawer(),
+                      ),
+                      Text(
+                        'Skyage',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Icon(
+                          Icons.notifications,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
+                      ),
+                    ],
                   ),
-                  const ProductsView(),
-                ],
-              );
-            },
-          ),
+                ),
+              ]),
+            ), // Placeholder for the top section
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric( horizontal:  8.0),
+                  child: Consumer<ProductViewModel>(
+                    builder: (context, productVM, _) {
+                      return const ProductsView();
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

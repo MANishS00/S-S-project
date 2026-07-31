@@ -46,9 +46,9 @@ class DealsProductsView extends StatelessWidget {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
-                childAspectRatio: 2.3 / 3,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
+                childAspectRatio: 0.70, // Adjust to your card's height
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
               ),
               itemCount: dealsProducts.length,
               itemBuilder: (ctx, index) {

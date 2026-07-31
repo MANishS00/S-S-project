@@ -55,7 +55,7 @@ Drawer appDrawer(BuildContext context) {
         _createDrawerItem(
           icon: Icons.shopping_basket,
           text: 'Products',
-          onTap: () => Navigator.pushNamed(context, '/product_list'),
+          onTap: () => Navigator.pushNamed(context, '/home'),
         ),
         if (authViewModel.isAuthenticated) ...[
           _createDrawerItem(

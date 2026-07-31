@@ -30,41 +30,65 @@ class _ProductItemState extends State<ProductItem> {
           ),
         );
       },
-      child: Stack(
-        children: [
-          Card(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(5)),
-                  child: Image.network(
-                    widget.product.profileImage,
-                    height: 120,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 120,
-                        color: Colors.grey[200],
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.broken_image,
-                          size: 50,
-                          color: Colors.grey,
+          ],
+        ),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Stack(
+                    children: [
+                      Image.network(
+                        widget.product.profileImage,
+                        height: 125,
+                        width: double.infinity,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            height: 125,
+                            color: Colors.grey[200],
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.broken_image,
+                              size: 44,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
+                      // Subtle gradient so badges stay legible over bright images
+                      Container(
+                        height: 125,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withOpacity(0.15),
+                              Colors.transparent,
+                              Colors.transparent,
+                            ],
+                            stops: const [0.0, 0.4, 1.0],
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -72,15 +96,30 @@ class _ProductItemState extends State<ProductItem> {
                           widget.product.name,
                           style: const TextStyle(
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff2b2f4a),
+                            height: 1.2,
                           ),
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        const Spacer(),
+                        const SizedBox(height: 4),
+                        Text(
+                          widget.product.description,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff424874),
+                            height: 1.2,
+                          ),
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             if (isOnSale)
                               Column(
@@ -89,16 +128,17 @@ class _ProductItemState extends State<ProductItem> {
                                   Text(
                                     'Rs ${salePrice.toStringAsFixed(2)}',
                                     style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.black,
+                                      fontSize: 13,
+                                      color: Color(0xffd7263d),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  const SizedBox(height: 2),
                                   Text(
                                     'Rs ${widget.product.price.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey[500],
                                       decoration: TextDecoration.lineThrough,
                                     ),
                                   ),
@@ -108,18 +148,13 @@ class _ProductItemState extends State<ProductItem> {
                               Text(
                                 'Rs ${widget.product.price.toStringAsFixed(2)}',
                                 style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   color: Color(0xff424874),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            IconButton(
-                              icon: const Icon(
-                                  Icons.add_shopping_cart_outlined,
-                                  color: Color(0xff424874),
-                                ),
-                              tooltip: 'Add Item cart',
-                              onPressed: () {
+                            InkWell(
+                              onTap: () {
                                 Provider.of<CartViewModel>(context,
                                         listen: false)
                                     .addToCart(widget.product, 1);
@@ -127,64 +162,84 @@ class _ProductItemState extends State<ProductItem> {
                                   const SnackBar(
                                     content: Text('Item Added to Cart!'),
                                     duration: Duration(seconds: 2),
+                                    behavior: SnackBarBehavior.floating,
                                   ),
                                 );
                               },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffE6E9F2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Center(
+                                    child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 22.0, vertical: 6.0),
+                                  child: Icon(Icons.add_shopping_cart_outlined,
+                                      color: Color(0xff424874)),
+                                )),
+                              ),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          if (isOnSale)
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  '-${discountPercentage.toStringAsFixed(0)}%',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                ],
               ),
             ),
-          if (isInStock)
-            Positioned(
-              top: 8,
-              left: 2,
-              child: Transform.rotate(
-                angle: -20,
+            if (isOnSale)
+              Positioned(
+                top: 10,
+                right: 10,
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(90),
+                    color: const Color(0xffd7263d),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                  child: const Text(
-                    'New',
-                    style: TextStyle(
+                  child: Text(
+                    '-${discountPercentage.toStringAsFixed(0)}%',
+                    style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
-            ),
-        ],
+            if (isInStock)
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.75),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'New',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

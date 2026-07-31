@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/wallet_viewmodel.dart';
+import '../../../auth/presentation/viewmodels/auth_viewmodel.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -18,10 +19,13 @@ class _WalletScreenState extends State<WalletScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final walletVM = Provider.of<WalletViewModel>(context, listen: false);
-      walletVM.fetchWalletBalance();
-      walletVM.fetchPayoutRequests();
-      walletVM.fetchWalletTransactions();
+      final authVM = Provider.of<AuthViewModel>(context, listen: false);
+      if (authVM.isAuthenticated) {
+        final walletVM = Provider.of<WalletViewModel>(context, listen: false);
+        walletVM.fetchWalletBalance();
+        walletVM.fetchPayoutRequests();
+        walletVM.fetchWalletTransactions();
+      }
     });
   }
 
@@ -142,6 +146,40 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authVM = Provider.of<AuthViewModel>(context);
+    if (!authVM.isAuthenticated) {
+      return Scaffold(
+        backgroundColor: const Color(0xffF4EEFF),
+        appBar: AppBar(
+          backgroundColor: const Color(0xffF4EEFF),
+          title: const Text('My Wallet'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.account_balance_wallet_outlined,
+                  size: 64, color: Color(0xff424874)),
+              const SizedBox(height: 16),
+              const Text('Please log in to view your wallet.',
+                  style: TextStyle(fontSize: 16)),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff424874),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/login');
+                },
+                child:
+                    const Text('Log In', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final walletVM = Provider.of<WalletViewModel>(context);
 
     return DefaultTabController(
