@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
@@ -6,6 +7,7 @@ class OrderSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Order Success'),
         automaticallyImplyLeading: false,

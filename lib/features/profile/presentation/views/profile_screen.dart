@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../auth/presentation/viewmodels/auth_viewmodel.dart';
@@ -19,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4EEFF),
+      backgroundColor: AppColors.white,
       body: authViewModel.isAuthenticated
           ? Consumer<ProfileViewModel>(
               builder: (context, profileVM, child) {

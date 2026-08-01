@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +90,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
     final consultantVM = Provider.of<ConsultantViewModel>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4EEFF),
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Contact Us & Consultant Request'),
       ),

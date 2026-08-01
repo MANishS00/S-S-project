@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/category_viewmodel.dart';
@@ -24,7 +25,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final categoryVM = context.watch<CategoryViewModel>();
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4EEFF),
+      backgroundColor: AppColors.white,
       body: categoryVM.isLoading
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(

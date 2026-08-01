@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class HelpPage extends StatelessWidget {
@@ -6,9 +7,10 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.white,
+        foregroundColor: Colors.black,
         title: const Text('Help'),
       ),
       body: Padding(

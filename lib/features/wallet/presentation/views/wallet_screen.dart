@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/wallet_viewmodel.dart';
@@ -149,9 +150,9 @@ class _WalletScreenState extends State<WalletScreen> {
     final authVM = Provider.of<AuthViewModel>(context);
     if (!authVM.isAuthenticated) {
       return Scaffold(
-        backgroundColor: const Color(0xffF4EEFF),
+        backgroundColor: AppColors.white,
         appBar: AppBar(
-          backgroundColor: const Color(0xffF4EEFF),
+          backgroundColor: AppColors.white,
           title: const Text('My Wallet'),
         ),
         body: Center(
@@ -185,7 +186,7 @@ class _WalletScreenState extends State<WalletScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: const Color(0xffF4EEFF),
+        backgroundColor: AppColors.white,
         appBar: AppBar(
           title: const Text('My Wallet'),
           bottom: const TabBar(

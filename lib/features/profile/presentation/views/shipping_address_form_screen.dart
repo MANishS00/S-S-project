@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/shipping_address_viewmodel.dart';
@@ -124,6 +125,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Shipping Address'),
       ),

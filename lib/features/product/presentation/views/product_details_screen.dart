@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/product_model.dart';
@@ -23,10 +24,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final cartVM = Provider.of<CartViewModel>(context, listen: false);
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4EEFF),
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: Text(widget.product.name),
-        backgroundColor: const Color(0xffF4EEFF),
+        backgroundColor: AppColors.white,
       ),
       body: SingleChildScrollView(
         child: Column(

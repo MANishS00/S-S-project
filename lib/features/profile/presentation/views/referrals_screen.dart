@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/profile_viewmodel.dart';
@@ -28,7 +29,7 @@ class _ReferralsScreenState extends State<ReferralsScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: const Color(0xffF4EEFF),
+        backgroundColor: AppColors.white,
         appBar: AppBar(
           title: const Text('My Referrals'),
           bottom: const TabBar(

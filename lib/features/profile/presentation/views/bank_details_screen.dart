@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/profile_viewmodel.dart';
@@ -99,7 +100,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
     final details = profileVM.bankDetails;
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4EEFF),
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Bank Details'),
         actions: [

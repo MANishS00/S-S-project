@@ -27,6 +27,8 @@ import 'features/profile/presentation/views/referrals_screen.dart';
 import 'features/profile/presentation/views/bank_details_screen.dart';
 import 'features/checkout/presentation/views/order_history_screen.dart';
 
+import 'core/theme/app_colors.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -55,6 +57,7 @@ class MyApp extends StatelessWidget {
       title: 'Sales & Service',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: AppColors.scaffoldBackground,
       ),
       home: HomePage(),
       routes: {

@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/product_viewmodel.dart';
@@ -45,6 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final results = productVM.searchResults;
 
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: TextField(
           controller: _searchController,

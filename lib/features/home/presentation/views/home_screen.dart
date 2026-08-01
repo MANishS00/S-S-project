@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:app/core/widgets/drawer.dart';
 import 'package:app/features/cart/presentation/viewmodels/cart_viewmodel.dart';
 import 'package:app/features/cart/presentation/views/cart_screen.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
             create: (_) => ProductViewModel()..fetchProducts()),
       ],
       child: Scaffold(
+        backgroundColor: AppColors.white,
         key: _scaffoldKey,
         drawer: appDrawer(context),
         body: Stack(children: [

@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../cart/presentation/viewmodels/cart_viewmodel.dart';
@@ -35,6 +36,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     double totalAmount = cartVM.totalAmount;
 
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Checkout'),
       ),

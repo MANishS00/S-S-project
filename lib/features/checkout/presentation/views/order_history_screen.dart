@@ -1,3 +1,4 @@
+import 'package:app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/checkout_viewmodel.dart';
@@ -59,7 +60,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
     final checkoutVM = Provider.of<CheckoutViewModel>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xffF4EEFF),
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Order History'),
       ),
