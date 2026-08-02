@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (cartVM.itemCount > 0)
             Positioned(
               right: 0,
-              bottom: 16,
+              bottom: 100,
               child: GestureDetector(
                 onTap: () {
                   // Open Cart Page
@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     horizontal: 18,
                   ),
                   decoration: const BoxDecoration(
-                    gradient: const LinearGradient(
+                    gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
                       colors: [

@@ -38,7 +38,7 @@ class ProductsView extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.80, // Adjust to your card's height
-                crossAxisSpacing: 8,
+                crossAxisSpacing: 10,
                 mainAxisSpacing: 8,
               ),
               itemBuilder: (context, index) {
@@ -48,7 +48,7 @@ class ProductsView extends StatelessWidget {
 
             /// Deals section (only if deals exist)
             if (hasDeals) ...[
-              const SizedBox(height: 16),
+              // const SizedBox(height: 16),
               Container(
                 decoration: const BoxDecoration(
                   color: Color(0xffA6B1E1),
@@ -112,7 +112,7 @@ class ProductsView extends StatelessWidget {
                   },
                 ),
               ),
-              // const SizedBox(height: 8),
+              const SizedBox(height: 90),
             ],
 
             /// Remaining products
