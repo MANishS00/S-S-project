@@ -145,6 +145,7 @@ class ProfileScreen extends StatelessWidget {
                                 );
                               },
                             ),
+                            const SizedBox(height: 18),
                           ],
                         ),
                       ),
@@ -178,8 +179,8 @@ class ProfileScreen extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFFd7eaff),
-                    Color(0xFFE3F2FD),
+                    Colors.black,
+                    Colors.black87,
                   ],
                 ),
               ),
@@ -199,11 +200,11 @@ class ProfileScreen extends StatelessWidget {
                   height: 82,
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.white,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.white.withOpacity(0.15),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
                       ),
@@ -230,7 +231,7 @@ class ProfileScreen extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.w700,
                         ),
@@ -241,14 +242,14 @@ class ProfileScreen extends StatelessWidget {
                             authViewModel.userEmail ??
                             'Phone number',
                         style: const TextStyle(
-                          color: Colors.black87,
+                          color: Colors.white70,
                           fontSize: 16,
                         ),
                       ),
                       Text(
                         authViewModel.userEmail ?? 'Email',
                         style: const TextStyle(
-                          color: Colors.black87,
+                          color: Colors.white70,
                           fontSize: 16,
                         ),
                       ),
@@ -306,7 +307,7 @@ class ProfileScreen extends StatelessWidget {
             const Icon(
               Icons.person_outline,
               size: 80,
-              color: Color(0xff5D3970),
+              color: Colors.black54,
             ),
             const SizedBox(height: 20),
             const Text(
@@ -328,7 +329,7 @@ class ProfileScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff5D3970),
+                  backgroundColor:   Colors.black,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -354,7 +355,7 @@ class ProfileScreen extends StatelessWidget {
               child: const Text(
                 'Create an account',
                 style: TextStyle(
-                  color: Color(0xff5D3970),
+                  color:   Colors.black,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -371,45 +372,94 @@ class ProfileScreen extends StatelessWidget {
   ) {
     showDialog(
       context: context,
+      barrierDismissible: true,
       builder: (context) {
-        return AlertDialog(
+        return Dialog(
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(24),
           ),
-          title: const Text(
-            'Log Out',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: const Text(
-            'Are you sure you want to log out?',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                authViewModel.logout();
+          // elevation: 10,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
 
-                Navigator.pop(context);
+                // Title
+                const Text(
+                  "Log Out",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
 
-                Navigator.pushReplacementNamed(
-                  context,
-                  '/home',
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff5D3970),
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Log Out'),
+                const SizedBox(height: 10),
+
+                // Message
+                Text(
+                  "Are you sure you want to log out from your account?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey.shade600,
+                    height: 1.4,
+                  ),
+                ),
+
+                const SizedBox(height: 28),
+
+                // Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: const Text("Cancel"),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          authViewModel.logout();
+
+                          Navigator.pop(context);
+
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/home',
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          minimumSize: const Size.fromHeight(48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: const Text(
+                          "Log Out",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -431,17 +481,20 @@ class _ProfileMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
       elevation: 2,
       shadowColor: Colors.black.withOpacity(0.08),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(
+          color: Colors.black26,
+        ),
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
           height: 64,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
               Icon(

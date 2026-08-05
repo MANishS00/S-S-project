@@ -12,118 +12,21 @@ class ShippingAddressForm extends StatefulWidget {
 
 class _ShippingAddressFormState extends State<ShippingAddressForm> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
-  final _fullNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _address1Controller = TextEditingController();
-  final _address2Controller = TextEditingController();
-  final _cityController = TextEditingController();
-  final _stateController = TextEditingController();
-  final _zipcodeController = TextEditingController();
-  final _countryController = TextEditingController();
-
-  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
-  }
-
-  Future<void> _loadData() async {
-    setState(() {
-      _isLoading = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ShippingAddressViewModel>(context, listen: false)
+          .fetchShippingAddress();
     });
-    final shippingVM = Provider.of<ShippingAddressViewModel>(context, listen: false);
-    try {
-      await shippingVM.fetchShippingAddress();
-      final shippingAddress = shippingVM.shippingAddress;
-      if (shippingAddress != null) {
-        _phoneController.text = shippingAddress.phone ?? '';
-        _fullNameController.text = shippingAddress.fullName ?? '';
-        _emailController.text = shippingAddress.email ?? '';
-        _address1Controller.text = shippingAddress.address1 ?? '';
-        _address2Controller.text = shippingAddress.address2 ?? '';
-        _cityController.text = shippingAddress.city ?? '';
-        _stateController.text = shippingAddress.state ?? '';
-        _zipcodeController.text = shippingAddress.zipcode ?? '';
-        _countryController.text = shippingAddress.country ?? '';
-      }
-    } catch (error) {
-      // Ignored error in fetch
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    _fullNameController.dispose();
-    _emailController.dispose();
-    _address1Controller.dispose();
-    _address2Controller.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _zipcodeController.dispose();
-    _countryController.dispose();
-    super.dispose();
-  }
-
-  void _clearForm() {
-    _phoneController.clear();
-    _fullNameController.clear();
-    _emailController.clear();
-    _address1Controller.clear();
-    _address2Controller.clear();
-    _cityController.clear();
-    _stateController.clear();
-    _zipcodeController.clear();
-    _countryController.clear();
-  }
-
-  void _saveForm() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      setState(() {
-        _isLoading = true;
-      });
-      final shippingVM = Provider.of<ShippingAddressViewModel>(context, listen: false);
-      try {
-        await shippingVM.createOrUpdateShippingAddress(
-          phone: _phoneController.text,
-          fullName: _fullNameController.text,
-          email: _emailController.text,
-          address1: _address1Controller.text,
-          address2: _address2Controller.text,
-          city: _cityController.text,
-          state: _stateController.text,
-          zipcode: _zipcodeController.text,
-          country: _countryController.text,
-        );
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Shipping address saved successfully'),
-          ),
-        );
-        Navigator.pop(context);
-      } catch (error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving data: $error'),
-          ),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final shippingVM = Provider.of<ShippingAddressViewModel>(context);
+    final isLoading = shippingVM.isLoading;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -131,14 +34,14 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: _isLoading
+        child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : Form(
                 key: _formKey,
                 child: ListView(
                   children: [
                     TextFormField(
-                      controller: _fullNameController,
+                      controller: shippingVM.fullNameController,
                       decoration: const InputDecoration(labelText: 'Full Name'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -148,18 +51,20 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       },
                     ),
                     TextFormField(
-                      controller: _emailController,
+                      controller: shippingVM.emailController,
                       decoration: const InputDecoration(labelText: 'Email'),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null || value.isEmpty || !value.contains('@')) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            !value.contains('@')) {
                           return 'Please enter a valid email';
                         }
                         return null;
                       },
                     ),
                     TextFormField(
-                      controller: _phoneController,
+                      controller: shippingVM.phoneController,
                       decoration: const InputDecoration(labelText: 'Phone'),
                       keyboardType: TextInputType.phone,
                       validator: (value) {
@@ -170,7 +75,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       },
                     ),
                     TextFormField(
-                      controller: _address1Controller,
+                      controller: shippingVM.address1Controller,
                       decoration: const InputDecoration(labelText: 'Address 1'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -180,11 +85,11 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       },
                     ),
                     TextFormField(
-                      controller: _address2Controller,
+                      controller: shippingVM.address2Controller,
                       decoration: const InputDecoration(labelText: 'Address 2'),
                     ),
                     TextFormField(
-                      controller: _cityController,
+                      controller: shippingVM.cityController,
                       decoration: const InputDecoration(labelText: 'City'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -194,7 +99,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       },
                     ),
                     TextFormField(
-                      controller: _stateController,
+                      controller: shippingVM.stateController,
                       decoration: const InputDecoration(labelText: 'State'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -204,7 +109,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       },
                     ),
                     TextFormField(
-                      controller: _zipcodeController,
+                      controller: shippingVM.zipcodeController,
                       decoration: const InputDecoration(labelText: 'Zip Code'),
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -215,7 +120,7 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       },
                     ),
                     TextFormField(
-                      controller: _countryController,
+                      controller: shippingVM.countryController,
                       decoration: const InputDecoration(labelText: 'Country'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -229,14 +134,38 @@ class _ShippingAddressFormState extends State<ShippingAddressForm> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          onPressed: _clearForm,
+                          onPressed: shippingVM.clearForm,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
                           ),
                           child: const Text('Clear'),
                         ),
                         ElevatedButton(
-                          onPressed: _saveForm,
+                          onPressed: () async {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              try {
+                                await shippingVM.saveShippingAddress();
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Shipping address saved successfully'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              } catch (error) {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('Error saving data: $error'),
+                                    ),
+                                  );
+                                }
+                              }
+                            }
+                          },
                           child: const Text('Save'),
                         ),
                       ],

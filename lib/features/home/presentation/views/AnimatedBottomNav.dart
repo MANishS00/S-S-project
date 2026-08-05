@@ -24,6 +24,7 @@ class AnimatedBottomNav extends StatelessWidget {
         child: Container(
           height: 70,
           decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
             color: Colors.white,
             borderRadius: BorderRadius.circular(35),
             boxShadow: [
@@ -49,9 +50,7 @@ class AnimatedBottomNav extends StatelessWidget {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected
-                        ?  Colors.black
-                        : Colors.transparent,
+                    color: isSelected ? Colors.black : Colors.transparent,
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Row(

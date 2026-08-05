@@ -51,7 +51,7 @@ class ProductsView extends StatelessWidget {
               // const SizedBox(height: 16),
               Container(
                 decoration: const BoxDecoration(
-                  color: Color(0xffA6B1E1),
+                  color: Colors.black54,
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
                   ),

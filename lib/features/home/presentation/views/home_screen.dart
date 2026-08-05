@@ -50,21 +50,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Stack(
                   children: [
                     Container(
-                      height: 120,
+                      height: 140,
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           begin: Alignment.bottomLeft,
                           end: Alignment.topRight,
                           colors: [
-                            Color(0xFFd7eaff),
-                            Color(0xFFE3F2FD),
+                            Colors.black,
+                            Colors.black45,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     Positioned(
-                      bottom: 30,
+                      bottom: 15,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 18.0),
                         child: GestureDetector(
@@ -80,6 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: MediaQuery.of(context).size.width - 35,
                               decoration: BoxDecoration(
                                 color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black45,
+                                ),
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
@@ -115,24 +118,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.menu),
+                            icon: const Icon(Icons.menu,color: Colors.white,),
                             onPressed: () =>
                                 _scaffoldKey.currentState?.openDrawer(),
                           ),
-                          Text(
+                          const Text(
                             'Skyage',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black.withOpacity(0.7),
+                              color: Colors.white,
                             ),
                           ),
-                          Padding(
+                          const Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                                EdgeInsets.symmetric(horizontal: 8.0),
                             child: Icon(
                               Icons.notifications,
-                              color: Colors.black.withOpacity(0.7),
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -169,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (cartVM.itemCount > 0)
             Positioned(
               right: 0,
-              bottom: 100,
+              bottom: 90,
               child: GestureDetector(
                 onTap: () {
                   // Open Cart Page
@@ -179,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 child: Container(
-                  height: 50,
+                  height: 60,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 18,
                   ),
@@ -188,8 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
                       colors: [
-                        Color(0xFFd7eaff),
-                        Color(0xFFE3F2FD),
+                        Colors.black,
+                        Colors.black87,
                       ],
                     ),
                     borderRadius: BorderRadius.only(
@@ -203,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Cart Icon
                       const Icon(
                         Icons.shopping_cart_outlined,
-                        color: Colors.black,
+                        color: Colors.white,
                         size: 32,
                       ),
 
@@ -217,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             '₹ ${cartVM.totalAmount.toStringAsFixed(2)}',
                             style: const TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -226,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             '${cartVM.itemCount} ${cartVM.itemCount == 1 ? 'item' : 'items'}',
                             style: const TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 14,
                             ),
                           ),
