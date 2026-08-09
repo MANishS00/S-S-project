@@ -1,29 +1,36 @@
 name: Android Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Select release environment"
-        required: true
-        type: choice
-        options:
-          - beta
-          - prod
+  push:
+    tags:
+      - 'beta-android-store-*'
+      - 'prod-android-store-*'
 
 permissions:
   contents: read
 
 jobs:
   build-and-release:
-    name: Build ${{ inputs.environment }}
-    runs-on: ubuntu-latest
+    name: Android Release
 
     steps:
       - name: Checkout selected branch
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+
+      - name: Determine environment
+        id: environment
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == beta-android-store-* ]]; then
+            echo "environment=beta" >> "$GITHUB_OUTPUT"
+          elif [[ "${GITHUB_REF_NAME}" == prod-android-store-* ]]; then
+            echo "environment=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "Invalid release tag: ${GITHUB_REF_NAME}"
+          exit 1
+          fi
 
       - name: Get commit information
         id: commit
@@ -32,7 +39,7 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           DATE=$(date -u +%Y%m%d)
 
-          if [ "${{ inputs.environment }}" = "beta" ]; then
+          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
             RELEASE_NAME="beta-android-store-${DATE}-${COMMIT_SHA}"
           else
             RELEASE_NAME="prod-android-store-${DATE}-${COMMIT_SHA}"
@@ -71,7 +78,7 @@ jobs:
           EOF
 
       - name: Build Beta
-        if: inputs.environment == 'beta'
+        if: steps.environment.outputs.environment == 'beta'
         run: |
           flutter build appbundle \
             --release \
@@ -79,7 +86,7 @@ jobs:
             --dart-define=ENVIRONMENT=beta
 
       - name: Build Production
-        if: inputs.environment == 'prod'
+        if: steps.environment.outputs.environment == 'prod'
         run: |
           flutter build appbundle \
             --release \
@@ -99,7 +106,7 @@ jobs:
         id: firebase
         shell: bash
         run: |
-          if [ "${{ inputs.environment }}" = "beta" ]; then
+          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
             echo "app_id=${{ secrets.FIREBASE_BETA_APP_ID }}" >> "$GITHUB_OUTPUT"
           else
             echo "app_id=${{ secrets.FIREBASE_PROD_APP_ID }}" >> "$GITHUB_OUTPUT"
@@ -108,7 +115,7 @@ jobs:
             - name: Distribute to Firebase App Distribution
         shell: bash
         run: |
-          if [ "${{ inputs.environment }}" = "beta" ]; then
+          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
             firebase appdistribution:distribute \
               build/app/outputs/bundle/release/app-release.aab \
               --app "${{ steps.firebase.outputs.app_id }}" \
@@ -126,13 +133,3 @@ jobs:
           Environment: prod
           Branch: ${{ github.ref_name }}"
           fi
-
-      - name: Create Git tag
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git tag "${{ steps.commit.outputs.release_name }}" "${{ github.sha }}"
-          git push origin "${{ steps.commit.outputs.release_name }}"
