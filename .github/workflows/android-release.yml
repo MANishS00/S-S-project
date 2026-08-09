@@ -12,9 +12,10 @@ permissions:
 jobs:
   build-and-release:
     name: Android Release
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout selected branch
+      - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
@@ -29,7 +30,7 @@ jobs:
             echo "environment=prod" >> "$GITHUB_OUTPUT"
           else
             echo "Invalid release tag: ${GITHUB_REF_NAME}"
-          exit 1
+            exit 1
           fi
 
       - name: Get commit information
@@ -39,11 +40,7 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           DATE=$(date -u +%Y%m%d)
 
-          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
-            RELEASE_NAME="beta-android-store-${DATE}-${COMMIT_SHA}"
-          else
-            RELEASE_NAME="prod-android-store-${DATE}-${COMMIT_SHA}"
-          fi
+          RELEASE_NAME="${GITHUB_REF_NAME}"
 
           echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
@@ -112,7 +109,7 @@ jobs:
             echo "app_id=${{ secrets.FIREBASE_PROD_APP_ID }}" >> "$GITHUB_OUTPUT"
           fi
 
-            - name: Distribute to Firebase App Distribution
+      - name: Distribute to Firebase App Distribution
         shell: bash
         run: |
           if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
@@ -122,7 +119,7 @@ jobs:
               --release-notes "Release: ${{ steps.commit.outputs.release_name }}
           Commit: ${{ steps.commit.outputs.commit_sha }}
           Environment: beta
-          Branch: ${{ github.ref_name }}" \
+          Branch/Tag: ${{ github.ref_name }}" \
               --groups "beta-testers"
           else
             firebase appdistribution:distribute \
@@ -131,5 +128,5 @@ jobs:
               --release-notes "Release: ${{ steps.commit.outputs.release_name }}
           Commit: ${{ steps.commit.outputs.commit_sha }}
           Environment: prod
-          Branch: ${{ github.ref_name }}"
+          Branch/Tag: ${{ github.ref_name }}"
           fi
