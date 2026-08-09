@@ -1,0 +1,138 @@
+name: Android Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select release environment"
+        required: true
+        type: choice
+        options:
+          - beta
+          - prod
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-release:
+    name: Build ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get commit information
+        id: commit
+        shell: bash
+        run: |
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          DATE=$(date -u +%Y%m%d)
+
+          if [ "${{ inputs.environment }}" = "beta" ]; then
+            RELEASE_NAME="beta-android-store-${DATE}-${COMMIT_SHA}"
+          else
+            RELEASE_NAME="prod-android-store-${DATE}-${COMMIT_SHA}"
+          fi
+
+          echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+          echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
+
+          echo "Commit: $COMMIT_SHA"
+          echo "Release: $RELEASE_NAME"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Create Android keystore
+        shell: bash
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
+
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=release-key.jks
+          EOF
+
+      - name: Build Beta
+        if: inputs.environment == 'beta'
+        run: |
+          flutter build appbundle \
+            --release \
+            --build-number=${{ github.run_number }} \
+            --dart-define=ENVIRONMENT=beta
+
+      - name: Build Production
+        if: inputs.environment == 'prod'
+        run: |
+          flutter build appbundle \
+            --release \
+            --build-number=${{ github.run_number }} \
+            --dart-define=ENVIRONMENT=prod
+
+      - name: Authenticate Firebase
+        shell: bash
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > "$RUNNER_TEMP/firebase-service-account.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Set Firebase App ID
+        id: firebase
+        shell: bash
+        run: |
+          if [ "${{ inputs.environment }}" = "beta" ]; then
+            echo "app_id=${{ secrets.FIREBASE_BETA_APP_ID }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "app_id=${{ secrets.FIREBASE_PROD_APP_ID }}" >> "$GITHUB_OUTPUT"
+          fi
+
+            - name: Distribute to Firebase App Distribution
+        shell: bash
+        run: |
+          if [ "${{ inputs.environment }}" = "beta" ]; then
+            firebase appdistribution:distribute \
+              build/app/outputs/bundle/release/app-release.aab \
+              --app "${{ steps.firebase.outputs.app_id }}" \
+              --release-notes "Release: ${{ steps.commit.outputs.release_name }}
+          Commit: ${{ steps.commit.outputs.commit_sha }}
+          Environment: beta
+          Branch: ${{ github.ref_name }}" \
+              --groups "beta-testers"
+          else
+            firebase appdistribution:distribute \
+              build/app/outputs/bundle/release/app-release.aab \
+              --app "${{ steps.firebase.outputs.app_id }}" \
+              --release-notes "Release: ${{ steps.commit.outputs.release_name }}
+          Commit: ${{ steps.commit.outputs.commit_sha }}
+          Environment: prod
+          Branch: ${{ github.ref_name }}"
+          fi
+
+      - name: Create Git tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag "${{ steps.commit.outputs.release_name }}" "${{ github.sha }}"
+          git push origin "${{ steps.commit.outputs.release_name }}"

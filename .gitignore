@@ -44,3 +44,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .vscode/launch.json
+
+# Android signing
+android/key.properties
+android/app/*.jks
+android/app/*.keystore
+android/app/google-services.json
