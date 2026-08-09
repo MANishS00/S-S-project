@@ -114,28 +114,41 @@ jobs:
         run: |
           if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
             echo "app_id=${{ secrets.FIREBASE_BETA_APP_ID }}" >> "$GITHUB_OUTPUT"
-          else
+          elif [ "${{ steps.environment.outputs.environment }}" = "prod" ]; then
             echo "app_id=${{ secrets.FIREBASE_PROD_APP_ID }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "Invalid environment"
+          exit 1
           fi
-
       - name: Distribute to Firebase App Distribution
         shell: bash
         run: |
-          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
+          ENVIRONMENT="${{ steps.environment.outputs.environment }}"
+
+          if [ "$ENVIRONMENT" = "beta" ]; then
+            RELEASE_NOTES="Release: ${{ steps.commit.outputs.release_name }}"
+            COMMIT_NOTES="Commit: ${{ steps.commit.outputs.commit_sha }}"
+            Environment: beta
+            Tag: ${{ github.ref_name }}"
+
+              firebase appdistribution:distribute \
+                build/app/outputs/bundle/release/app-release.aab \
+                --app "${{ secrets.FIREBASE_BETA_APP_ID }}" \
+                --release-notes "$RELEASE_NOTES" \
+                --groups "beta-testers"
+
+          elif [ "$ENVIRONMENT" = "prod" ]; then
+            RELEASE_NOTES="Release: ${{ steps.commit.outputs.release_name }}
+            Commit: ${{ steps.commit.outputs.commit_sha }}
+            Environment: prod
+            Tag: ${{ github.ref_name }}"
+
             firebase appdistribution:distribute \
               build/app/outputs/bundle/release/app-release.aab \
-              --app "${{ steps.firebase.outputs.app_id }}" \
-              --release-notes "Release: ${{ steps.commit.outputs.release_name }}
-          Commit: ${{ steps.commit.outputs.commit_sha }}
-          Environment: beta
-          Branch/Tag: ${{ github.ref_name }}" \
-              --groups "beta-testers"
+              --app "${{ secrets.FIREBASE_PROD_APP_ID }}" \
+              --release-notes "$RELEASE_NOTES"
+
           else
-            firebase appdistribution:distribute \
-              build/app/outputs/bundle/release/app-release.aab \
-              --app "${{ steps.firebase.outputs.app_id }}" \
-              --release-notes "Release: ${{ steps.commit.outputs.release_name }}
-          Commit: ${{ steps.commit.outputs.commit_sha }}
-          Environment: prod
-          Branch/Tag: ${{ github.ref_name }}"
+            echo "Invalid environment: $ENVIRONMENT"
+            exit 1
           fi
