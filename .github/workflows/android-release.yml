@@ -38,16 +38,14 @@ jobs:
         shell: bash
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
-          DATE=$(date -u +%Y%m%d)
-
           RELEASE_NAME="${GITHUB_REF_NAME}"
 
           echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
-          echo "date=$DATE" >> "$GITHUB_OUTPUT"
           echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
 
           echo "Commit: $COMMIT_SHA"
           echo "Release: $RELEASE_NAME"
+          echo "Environment: ${{ steps.environment.outputs.environment }}"
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -118,34 +116,34 @@ jobs:
             echo "app_id=${{ secrets.FIREBASE_PROD_APP_ID }}" >> "$GITHUB_OUTPUT"
           else
             echo "Invalid environment"
-          exit 1
+            exit 1
           fi
+
       - name: Distribute to Firebase App Distribution
         shell: bash
         run: |
           ENVIRONMENT="${{ steps.environment.outputs.environment }}"
+          RELEASE_NAME="${{ steps.commit.outputs.release_name }}"
+          COMMIT_SHA="${{ steps.commit.outputs.commit_sha }}"
+          TAG="${{ github.ref_name }}"
+          APP_ID="${{ steps.firebase.outputs.app_id }}"
+
+          RELEASE_NOTES="Release: ${RELEASE_NAME}
+          Commit: ${COMMIT_SHA}
+          Environment: ${ENVIRONMENT}
+          Tag: ${TAG}"
 
           if [ "$ENVIRONMENT" = "beta" ]; then
-            RELEASE_NOTES="Release: ${{ steps.commit.outputs.release_name }}"
-            COMMIT_NOTES="Commit: ${{ steps.commit.outputs.commit_sha }}"
-            Environment: beta
-            Tag: ${{ github.ref_name }}"
-
-              firebase appdistribution:distribute \
-                build/app/outputs/bundle/release/app-release.aab \
-                --app "${{ secrets.FIREBASE_BETA_APP_ID }}" \
-                --release-notes "$RELEASE_NOTES" \
-                --groups "beta-testers"
-
-          elif [ "$ENVIRONMENT" = "prod" ]; then
-            RELEASE_NOTES="Release: ${{ steps.commit.outputs.release_name }}
-            Commit: ${{ steps.commit.outputs.commit_sha }}
-            Environment: prod
-            Tag: ${{ github.ref_name }}"
-
             firebase appdistribution:distribute \
               build/app/outputs/bundle/release/app-release.aab \
-              --app "${{ secrets.FIREBASE_PROD_APP_ID }}" \
+              --app "$APP_ID" \
+              --release-notes "$RELEASE_NOTES" \
+              --groups "beta-testers"
+
+          elif [ "$ENVIRONMENT" = "prod" ]; then
+            firebase appdistribution:distribute \
+              build/app/outputs/bundle/release/app-release.aab \
+              --app "$APP_ID" \
               --release-notes "$RELEASE_NOTES"
 
           else
