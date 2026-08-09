@@ -19,7 +19,7 @@ class OrderRepositoryImpl implements OrderRepository {
     required Map<String, dynamic> shippingAddress,
     required List<Map<String, dynamic>> items,
   }) async {
-    final url = Uri.parse('${Config.baseUrl}/api/create_order/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/create_order/');
 
     final body = jsonEncode({
       'user_id': userId,
@@ -43,7 +43,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<List<OrderHistoryModel>> fetchOrderHistory(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/orders/history/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/orders/history/');
     final response = await client.get(
       url,
       headers: {

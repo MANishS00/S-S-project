@@ -12,7 +12,7 @@ class WalletRepositoryImpl implements WalletRepository {
 
   @override
   Future<WalletBalanceModel> fetchWalletBalance(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/wallet/balance/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/wallet/balance/');
     final response = await client.get(
       url,
       headers: {
@@ -29,7 +29,7 @@ class WalletRepositoryImpl implements WalletRepository {
 
   @override
   Future<List<PayoutRequestModel>> fetchPayoutRequests(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/wallet/payouts/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/wallet/payouts/');
     final response = await client.get(
       url,
       headers: {
@@ -55,7 +55,7 @@ class WalletRepositoryImpl implements WalletRepository {
 
   @override
   Future<List<WalletTransactionModel>> fetchWalletTransactions(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/wallet/transactions/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/wallet/transactions/');
     final response = await client.get(
       url,
       headers: {
@@ -81,7 +81,7 @@ class WalletRepositoryImpl implements WalletRepository {
 
   @override
   Future<void> requestWithdrawal(double amount, String upiId, String? requestId, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/wallet/withdraw/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/wallet/withdraw/');
     final response = await client.post(
       url,
       headers: {

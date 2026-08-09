@@ -12,7 +12,7 @@ class BannerRepositoryImpl implements BannerRepository {
 
   @override
   Future<List<BannerModel>> fetchBanners() async {
-    final url = Uri.parse('${Config.baseUrl}/api/banners/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/banners/');
     final response = await client.get(url);
 
     if (response.statusCode == 200) {

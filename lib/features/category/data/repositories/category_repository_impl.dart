@@ -12,7 +12,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 
   @override
   Future<List<CategoryModel>> fetchCategories() async {
-    final url = Uri.parse('${Config.baseUrl}/api/categories/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/categories/');
     final response = await client.get(url);
 
     if (response.statusCode == 200) {

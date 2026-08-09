@@ -18,7 +18,7 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<List<CartItemModel>> fetchCart(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/cart/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/cart/');
     final response = await client.get(
       url,
       headers: {
@@ -36,7 +36,7 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<List<CartItemModel>> addToCart(int productId, int quantity, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/cart/add/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/cart/add/');
     final response = await client.post(
       url,
       headers: {
@@ -58,7 +58,7 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<List<CartItemModel>> removeFromCart(int productId, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/cart/delete/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/cart/delete/');
     final response = await client.post(
       url,
       headers: {
@@ -79,7 +79,7 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<List<CartItemModel>> updateCartQuantity(int productId, int quantity, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/cart/update/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/cart/update/');
     final response = await client.post(
       url,
       headers: {
@@ -101,7 +101,7 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<double> fetchCartTotal(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/cart/total/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/cart/total/');
     final response = await client.get(
       url,
       headers: {

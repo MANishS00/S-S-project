@@ -14,7 +14,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
     double totalAmount,
     List<Map<String, dynamic>> cartItems,
   ) async {
-    final String initiatePaymentUrl = '${Config.baseUrl}/payment/process/';
+    final String initiatePaymentUrl = '${AppConfig.baseUrl}/payment/process/';
 
     final response = await client.post(
       Uri.parse(initiatePaymentUrl),
@@ -37,7 +37,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
   @override
   Future<void> executePayment(String paymentId, String payerId) async {
     final String executePaymentUrl =
-        '${Config.baseUrl}/payment/execute/?paymentId=$paymentId&PayerID=$payerId';
+        '${AppConfig.baseUrl}/payment/execute/?paymentId=$paymentId&PayerID=$payerId';
 
     final response = await client.get(Uri.parse(executePaymentUrl));
 

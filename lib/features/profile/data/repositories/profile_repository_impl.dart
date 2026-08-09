@@ -16,7 +16,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ProfileModel> fetchProfile(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/profile/me/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/profile/me/');
     final response = await client.get(
       url,
       headers: {
@@ -44,7 +44,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String? zipcode,
     String? country,
   }) async {
-    final url = Uri.parse('${Config.baseUrl}/api/profile/me/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/profile/me/');
     final request = http.MultipartRequest('PATCH', url);
     request.headers['Authorization'] = 'Bearer $token';
 
@@ -80,7 +80,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<List<ReferralModel>> fetchReferrals(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/user/referrals/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/user/referrals/');
     final response = await client.get(
       url,
       headers: {
@@ -98,7 +98,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<BankDetailsModel?> fetchBankDetails(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/users/get-bank-details/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/users/get-bank-details/');
     final response = await client.get(
       url,
       headers: {
@@ -118,7 +118,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<BankDetailsModel> submitBankDetails(BankDetailsModel details, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/users/bank-details/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/users/bank-details/');
     final response = await client.post(
       url,
       headers: {
@@ -145,7 +145,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<List<ReferralTreeModel>> fetchReferralTree(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/mlmtree/api/tree/');
+    final url = Uri.parse('${AppConfig.baseUrl}/mlmtree/api/tree/');
     final response = await client.get(
       url,
       headers: {

@@ -13,7 +13,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<ProductModel>> fetchProducts() async {
-    final url = Uri.parse('${Config.baseUrl}/api/products/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/products/');
     final response = await client.get(url);
 
     if (response.statusCode == 200) {
@@ -30,7 +30,7 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<List<ProductModel>> fetchProductsByCategory(int categoryId) async {
     final url =
-        Uri.parse('${Config.baseUrl}/api/products/?category=$categoryId');
+        Uri.parse('${AppConfig.baseUrl}/api/products/?category=$categoryId');
     final response = await client.get(url);
 
     if (response.statusCode == 200) {
@@ -61,32 +61,32 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<ProductModel>> fetchFeaturedProducts() async {
-    final url = Uri.parse('${Config.baseUrl}/api/products/featured/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/products/featured/');
     return _fetchProductsFromUrl(url, 'Failed to load featured products');
   }
 
   @override
   Future<List<ProductModel>> fetchRecentProducts() async {
-    final url = Uri.parse('${Config.baseUrl}/api/products/recent/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/products/recent/');
     return _fetchProductsFromUrl(url, 'Failed to load recent products');
   }
 
   @override
   Future<List<ProductModel>> fetchSaleProducts() async {
-    final url = Uri.parse('${Config.baseUrl}/api/products/sale/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/products/sale/');
     return _fetchProductsFromUrl(url, 'Failed to load sale products');
   }
 
   @override
   Future<List<ProductModel>> searchProducts(String query) async {
     final url = Uri.parse(
-        '${Config.baseUrl}/api/products/search/?query=${Uri.encodeComponent(query)}');
+        '${AppConfig.baseUrl}/api/products/search/?query=${Uri.encodeComponent(query)}');
     return _fetchProductsFromUrl(url, 'Failed to search products');
   }
 
   @override
   Future<ProductModel> fetchProductById(int id) async {
-    final url = Uri.parse('${Config.baseUrl}/api/products/$id/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/products/$id/');
     final response = await client.get(url);
 
     if (response.statusCode == 200) {

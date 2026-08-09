@@ -17,7 +17,7 @@ class ConsultantRepositoryImpl implements ConsultantRepository {
     required String email,
     required String message,
   }) async {
-    final url = Uri.parse('${Config.baseUrl}/api/consultant/request/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/consultant/request/');
     final response = await client.post(
       url,
       headers: {
@@ -39,7 +39,7 @@ class ConsultantRepositoryImpl implements ConsultantRepository {
 
   @override
   Future<List<Map<String, dynamic>>> fetchConsultantRequests(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/consultant/requests/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/consultant/requests/');
     final response = await client.get(
       url,
       headers: {

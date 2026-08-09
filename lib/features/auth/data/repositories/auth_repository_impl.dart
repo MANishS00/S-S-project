@@ -12,7 +12,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Map<String, String>> login(String email, String password) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/jwt/create/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/jwt/create/');
     final response = await client.post(
       url,
       body: json.encode({'email': email, 'password': password}),
@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Map<String, String>> refreshToken(String refreshToken) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/jwt/refresh/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/jwt/refresh/');
     final response = await client.post(
       url,
       body: json.encode({'refresh': refreshToken}),
@@ -52,7 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> verifyToken(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/jwt/verify/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/jwt/verify/');
     final response = await client.post(
       url,
       body: json.encode({'token': token}),
@@ -63,7 +63,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> resetPassword(String email) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/users/reset_password/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/users/reset_password/');
     final response = await client.post(
       url,
       body: json.encode({'email': email}),
@@ -77,7 +77,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> setPassword(String currentPassword, String newPassword, String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/users/set_password/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/users/set_password/');
     final response = await client.post(
       url,
       body: json.encode({
@@ -104,7 +104,7 @@ class AuthRepositoryImpl implements AuthRepository {
     String lastName,
     String uniqueId,
   ) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/users/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/users/');
     final response = await client.post(
       url,
       body: json.encode({
@@ -125,7 +125,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserModel> fetchUserDetails(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/auth/users/me/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/auth/users/me/');
     final response = await client.get(
       url,
       headers: {

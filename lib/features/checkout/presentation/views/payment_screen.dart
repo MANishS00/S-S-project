@@ -20,7 +20,7 @@
 //
 //   Future<void> createOrder(
 //       BuildContext context, Map<String, dynamic> paymentDetails) async {
-//     final url = Uri.parse('${Config.baseUrl}/api/create-order/');
+//     final url = Uri.parse('${AppConfig.baseUrl}/api/create-order/');
 //
 //     final formattedShippingAddress = '${shippingAddress['phone']}\n'
 //         '${shippingAddress['address1']}\n'

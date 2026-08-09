@@ -18,7 +18,7 @@
 
 //   Future<void> login(String email, String password) async {
 //     // final url = Uri.parse('http://10.0.2.2:8000/api/auth/jwt/create/');
-//     final url = Uri.parse('${Config.baseUrl}/api/auth/jwt/create/');
+//     final url = Uri.parse('${AppConfig.baseUrl}/api/auth/jwt/create/');
 //     final response = await http.post(
 //       url,
 //       body: json.encode({'email': email, 'password': password}),
@@ -42,7 +42,7 @@
 //   }
 
 //   Future<void> register(String email, String password1, String password2, String firstName, String lastName, String uniqueId) async {
-//     final url = Uri.parse('${Config.baseUrl}/api/auth/users/');
+//     final url = Uri.parse('${AppConfig.baseUrl}/api/auth/users/');
 //     final response = await http.post(
 //       url,
 //       body: json.encode({
@@ -64,7 +64,7 @@
 //   }
 
 //   Future<void> _fetchUserDetails() async {
-//     final url = Uri.parse('${Config.baseUrl}/api/auth/users/me/');
+//     final url = Uri.parse('${AppConfig.baseUrl}/api/auth/users/me/');
 //     final response = await http.get(
 //       url,
 //       headers: {

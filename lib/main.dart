@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
+import 'package:app/core/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Sales & Service',
+      title: AppConfig.appName,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: AppColors.scaffoldBackground,

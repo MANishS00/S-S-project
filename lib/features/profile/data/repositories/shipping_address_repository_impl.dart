@@ -12,7 +12,7 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
 
   @override
   Future<ShippingAddressModel?> fetchShippingAddress(String token) async {
-    final url = Uri.parse('${Config.baseUrl}/api/shipping-address/me/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/shipping-address/me/');
     final response = await client.get(
       url,
       headers: {
@@ -46,7 +46,7 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
     String? zipcode,
     String? country,
   }) async {
-    final url = Uri.parse('${Config.baseUrl}/api/shipping-address/me/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/shipping-address/me/');
     final response = await client.put(
       url,
       headers: {
