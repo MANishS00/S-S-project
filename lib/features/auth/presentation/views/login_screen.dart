@@ -81,10 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: SizedBox(
                 height: 50,
-                width: 150,
+                width: 250,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff024874),
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

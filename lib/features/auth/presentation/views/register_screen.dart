@@ -72,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     decoration: const InputDecoration(
-                      labelText: "Unique ID",
+                      labelText: "PAN Number",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(12),
@@ -160,10 +160,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Center(
                   child: SizedBox(
                     height: 50,
-                    width: 150,
+                    width: 250,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff024874),
+                        backgroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
