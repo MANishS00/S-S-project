@@ -62,6 +62,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Configure Firebase
+        shell: bash
+        run: |
+          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
+            echo '${{ secrets.FIREBASE_BETA_GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+          else
+            echo '${{ secrets.FIREBASE_PROD_GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+          fi
+
       - name: Create Android keystore
         shell: bash
         run: |
