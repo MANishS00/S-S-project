@@ -1,0 +1,152 @@
+name: Android Release
+
+on:
+  push:
+    tags:
+      - 'beta-android-store-*'
+      - 'prod-android-store-*'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-release:
+    name: Android Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Determine environment
+        id: environment
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == beta-android-store-* ]]; then
+            echo "environment=beta" >> "$GITHUB_OUTPUT"
+          elif [[ "${GITHUB_REF_NAME}" == prod-android-store-* ]]; then
+            echo "environment=prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "Invalid release tag: ${GITHUB_REF_NAME}"
+            exit 1
+          fi
+
+      - name: Get commit information
+        id: commit
+        shell: bash
+        run: |
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          RELEASE_NAME="${GITHUB_REF_NAME}"
+
+          echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
+
+          echo "Commit: $COMMIT_SHA"
+          echo "Release: $RELEASE_NAME"
+          echo "Environment: ${{ steps.environment.outputs.environment }}"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: stable
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Configure Firebase
+        shell: bash
+        run: |
+          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
+            echo '${{ secrets.FIREBASE_BETA_GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+          else
+            echo '${{ secrets.FIREBASE_PROD_GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
+          fi
+
+      - name: Create Android keystore
+        shell: bash
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/release-key.jks
+
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=release-key.jks
+          EOF
+
+      - name: Build Beta
+        if: steps.environment.outputs.environment == 'beta'
+        run: |
+          flutter build apk \
+            --release \
+            --build-number=${{ github.run_number }} \
+            --dart-define=ENVIRONMENT=beta
+
+      - name: Build Production
+        if: steps.environment.outputs.environment == 'prod'
+        run: |
+          flutter build appbundle \
+            --release \
+            --build-number=${{ github.run_number }} \
+            --dart-define=ENVIRONMENT=prod
+
+      - name: Authenticate Firebase
+        shell: bash
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}' > "$RUNNER_TEMP/firebase-service-account.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Set Firebase App ID
+        id: firebase
+        shell: bash
+        run: |
+          if [ "${{ steps.environment.outputs.environment }}" = "beta" ]; then
+            echo "app_id=${{ secrets.FIREBASE_BETA_APP_ID }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ steps.environment.outputs.environment }}" = "prod" ]; then
+            echo "app_id=${{ secrets.FIREBASE_PROD_APP_ID }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "Invalid environment"
+            exit 1
+          fi
+
+      - name: Distribute to Firebase App Distribution
+        shell: bash
+        run: |
+          ENVIRONMENT="${{ steps.environment.outputs.environment }}"
+          RELEASE_NAME="${{ steps.commit.outputs.release_name }}"
+          COMMIT_SHA="${{ steps.commit.outputs.commit_sha }}"
+          TAG="${{ github.ref_name }}"
+          APP_ID="${{ steps.firebase.outputs.app_id }}"
+
+          RELEASE_NOTES="Release: ${RELEASE_NAME}
+          Commit: ${COMMIT_SHA}
+          Environment: ${ENVIRONMENT}
+          Tag: ${TAG}"
+
+          if [ "$ENVIRONMENT" = "beta" ]; then
+            firebase appdistribution:distribute \
+              build/app/outputs/flutter-apk/app-release.apk \
+              --app "$APP_ID" \
+              --release-notes "$RELEASE_NOTES" \
+              --groups "beta-testers"
+
+          elif [ "$ENVIRONMENT" = "prod" ]; then
+            firebase appdistribution:distribute \
+              build/app/outputs/flutter-apk/app-release.apk \
+              --app "$APP_ID" \
+              --release-notes "$RELEASE_NOTES"
+
+          else
+            echo "Invalid environment: $ENVIRONMENT"
+            exit 1
+          fi

@@ -1,4 +1,4 @@
-package com.example.app
+package com.ss.skyage.app
 
 import io.flutter.embedding.android.FlutterActivity
 
