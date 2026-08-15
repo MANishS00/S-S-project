@@ -135,7 +135,7 @@ jobs:
 
           if [ "$ENVIRONMENT" = "beta" ]; then
             firebase appdistribution:distribute \
-              build/app/outputs/bundle/release/app-release.apk \
+              build/app/outputs/apk/debug/app-debug.apk \
               --app "$APP_ID" \
               --release-notes "$RELEASE_NOTES" \
               --groups "beta-testers"
