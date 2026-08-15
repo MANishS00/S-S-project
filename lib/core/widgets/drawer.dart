@@ -1,3 +1,4 @@
+import 'package:app/core/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../features/auth/presentation/viewmodels/auth_viewmodel.dart';
@@ -51,6 +52,11 @@ Drawer appDrawer(BuildContext context) {
           icon: Icons.home,
           text: 'Home',
           onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+        ),
+        _createDrawerItem(
+          icon: Icons.shopping_basket,
+          text: AppConfig.baseUrl,
+          onTap: () => Navigator.pushNamed(context, ''),
         ),
         _createDrawerItem(
           icon: Icons.shopping_basket,

@@ -31,6 +31,7 @@ import 'features/checkout/presentation/views/order_history_screen.dart';
 import 'core/theme/app_colors.dart';
 
 void main() async {
+  AppConfig.printConfig();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
