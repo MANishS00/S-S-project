@@ -84,7 +84,7 @@ jobs:
       - name: Build Beta
         if: steps.environment.outputs.environment == 'beta'
         run: |
-          flutter build appbundle \
+          flutter build apk \
             --release \
             --build-number=${{ github.run_number }} \
             --dart-define=ENVIRONMENT=beta
@@ -135,7 +135,7 @@ jobs:
 
           if [ "$ENVIRONMENT" = "beta" ]; then
             firebase appdistribution:distribute \
-              build/app/outputs/bundle/release/app-release.aab \
+              build/app/outputs/bundle/release/app-release.apk \
               --app "$APP_ID" \
               --release-notes "$RELEASE_NOTES" \
               --groups "beta-testers"
